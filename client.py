@@ -24,7 +24,7 @@ class UserSession:
 
         queue = Queue()
         threading.Thread(target=self.listen_for_messages, daemon=False, args=[]).start()
-
+        threading.Thread(target=self.process_user_commands, daemon=False, args=[]).start()
         session_id = queue.get()
 
     def __exit__(self):
@@ -44,6 +44,14 @@ class UserSession:
             if response.HasField("removed_connection"):
                 print("User " + response.removed_connection.removed_user_name + " disconnected from session")
                 print("Current users: " + ", ".join(response.removed_connection.current_users))
+            if response.HasField("chat_message"):
+                print(response.chat_message.user_name + ": " + response.chat_message.text)
+
+    def process_user_commands(self):
+        while True:
+            command = input()
+            if command.startswith("chat "):
+                self._stub.SendUserCommand(mafia_pb2.SendUserCommandRequest(chat_message=mafia_pb2.SendUserCommandRequest.ChatMessage(session_name=self.session_name, user_name=self.user_name, text=command[5:])))
 
 print("Hi! Wanna play some mafia?")
 print("Enter name of session you want to connect to")

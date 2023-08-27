@@ -34,6 +34,11 @@ class MafiaStub(object):
                 request_serializer=mafia__pb2.GetMessageRequest.SerializeToString,
                 response_deserializer=mafia__pb2.GetMessageResponse.FromString,
                 )
+        self.SendUserCommand = channel.unary_unary(
+                '/Mafia/SendUserCommand',
+                request_serializer=mafia__pb2.SendUserCommandRequest.SerializeToString,
+                response_deserializer=mafia__pb2.EmptyServerResponse.FromString,
+                )
 
 
 class MafiaServicer(object):
@@ -63,6 +68,12 @@ class MafiaServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def SendUserCommand(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_MafiaServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -85,6 +96,11 @@ def add_MafiaServicer_to_server(servicer, server):
                     servicer.GetNewMessage,
                     request_deserializer=mafia__pb2.GetMessageRequest.FromString,
                     response_serializer=mafia__pb2.GetMessageResponse.SerializeToString,
+            ),
+            'SendUserCommand': grpc.unary_unary_rpc_method_handler(
+                    servicer.SendUserCommand,
+                    request_deserializer=mafia__pb2.SendUserCommandRequest.FromString,
+                    response_serializer=mafia__pb2.EmptyServerResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -161,5 +177,22 @@ class Mafia(object):
         return grpc.experimental.unary_unary(request, target, '/Mafia/GetNewMessage',
             mafia__pb2.GetMessageRequest.SerializeToString,
             mafia__pb2.GetMessageResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def SendUserCommand(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/Mafia/SendUserCommand',
+            mafia__pb2.SendUserCommandRequest.SerializeToString,
+            mafia__pb2.EmptyServerResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

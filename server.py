@@ -15,6 +15,7 @@ class MessageType(Enum):
     SUCCESS_CONNECTION = 2
     NEW_CONNECTION = 3
     REMOVED_CONNECTION = 4
+    CHAT_MESSAGE = 5
 
 class Message:
     def __init__(self):
@@ -34,6 +35,11 @@ class Message:
         self.user_name = user_name
         self.users = users
     
+    def make_user_chat_message(self, user_name, text):
+        self._type = MessageType.CHAT_MESSAGE
+        self.user_name = user_name
+        self.text = text
+    
     def ConvertToGetMessageResponse(self):
         if self._type == MessageType.NONE:
             return mafia_pb2.GetMessageResponse(none_message=mafia_pb2.GetMessageResponse.NoneMessage())
@@ -43,6 +49,18 @@ class Message:
             return mafia_pb2.GetMessageResponse(new_connection=mafia_pb2.GetMessageResponse.NewConnectionMessage(new_user_name=self.user_name, current_users=self.users))
         if self._type == MessageType.REMOVED_CONNECTION:
             return mafia_pb2.GetMessageResponse(removed_connection=mafia_pb2.GetMessageResponse.RemovedConnectionMessage(removed_user_name=self.user_name, current_users=self.users))
+        if self._type == MessageType.CHAT_MESSAGE:
+            return mafia_pb2.GetMessageResponse(chat_message=mafia_pb2.GetMessageResponse.ChatMessage(user_name=self.user_name, text=self.text))
+
+class Role(Enum):
+    PEACEFUL = 1
+    MAFIA = 2
+    COMISSAR = 3
+
+class GameStage(Enum):
+    NOT_STARTED = 1
+    DAY = 2
+    NIGHT = 3
 
 class User:
     def __init__(self, name):
@@ -60,6 +78,7 @@ class User:
 class Session:
     def __init__(self):
         self.session_name = ""
+        self.game_stage = GameStage.NOT_STARTED
         self.users = {}
     
     def add_user(self, user_name):
@@ -81,6 +100,12 @@ class Session:
     def get_user_message(self, user_name):
         return self.users[user_name].get_message()
 
+    def send_user_message(self, user_name, text):
+        message = Message()
+        message.make_user_chat_message(user_name, text)
+        for name, user in self.users.items():
+            user.add_message(message)
+
 class MafiaConnection(mafia_pb2_grpc.MafiaServicer):
     def ConnectToServer(self, request, context):
         if request.session_name not in current_sessions:
@@ -100,6 +125,11 @@ class MafiaConnection(mafia_pb2_grpc.MafiaServicer):
     def GetNewMessage(self, request, context):
         message = current_sessions[request.session_name].get_user_message(request.user_name)
         return message.ConvertToGetMessageResponse()
+
+    def SendUserCommand(self, request, context):
+        if request.HasField("chat_message"):
+            current_sessions[request.chat_message.session_name].send_user_message(request.chat_message.user_name, request.chat_message.text)
+            return mafia_pb2.EmptyServerResponse()
 
 port = "50051"
 server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
