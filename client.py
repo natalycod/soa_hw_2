@@ -28,11 +28,15 @@ class UserSession:
         session_id = queue.get()
 
     def __exit__(self):
-        self._stub.DisconnectFromServer(mafia_pb2.DisconnectToServerMessage(session_name=self.session_name, user_name=self.user_name))
+        response = self._stub.DisconnectFromServer(mafia_pb2.DisconnectToServerMessage(session_name=self.session_name, user_name=self.user_name))
+        if response.HasField("common_error"):
+            print("error: " + response.common_error.error_text)
 
     def listen_for_messages(self):
-        self._stub.ConnectToServer(mafia_pb2.ConnectToServerMessage(session_name=self.session_name, user_name=self.user_name))
-
+        response = self._stub.ConnectToServer(mafia_pb2.ConnectToServerMessage(session_name=self.session_name, user_name=self.user_name))
+        if response.HasField("common_error"):
+            print("error: " + response.common_error.error_text)
+        
         while True:
             response = self._stub.GetNewMessage(mafia_pb2.GetMessageRequest(session_name=self.session_name, user_name=self.user_name))
             if response.HasField("success_connection"):
@@ -46,12 +50,23 @@ class UserSession:
                 print("Current users: " + ", ".join(response.removed_connection.current_users))
             if response.HasField("chat_message"):
                 print(response.chat_message.user_name + ": " + response.chat_message.text)
+            if response.HasField("new_role_message"):
+                print("Your role is " + response.new_role_message.role_name)
+            if response.HasField("new_stage_message"):
+                print("Now is " + response.new_stage_message.stage_name)
 
     def process_user_commands(self):
         while True:
             command = input()
             if command.startswith("chat "):
-                self._stub.SendUserCommand(mafia_pb2.SendUserCommandRequest(chat_message=mafia_pb2.SendUserCommandRequest.ChatMessage(session_name=self.session_name, user_name=self.user_name, text=command[5:])))
+                response = self._stub.SendUserCommand(mafia_pb2.SendUserCommandRequest(chat_message=mafia_pb2.SendUserCommandRequest.ChatMessage(session_name=self.session_name, user_name=self.user_name, text=command[5:])))
+                if response.HasField("common_error"):
+                    print("error: " + response.common_error.error_text)
+            if command.startswith("end_day"):
+                response = self._stub.SendUserCommand(mafia_pb2.SendUserCommandRequest(end_day=mafia_pb2.SendUserCommandRequest.EndDayMessage(session_name=self.session_name, user_name=self.user_name)))
+                if response.HasField("common_error"):
+                    print("error: " + response.common_error.error_text)
+
 
 print("Hi! Wanna play some mafia?")
 print("Enter name of session you want to connect to")

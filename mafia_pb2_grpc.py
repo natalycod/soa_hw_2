@@ -17,17 +17,12 @@ class MafiaStub(object):
         self.ConnectToServer = channel.unary_unary(
                 '/Mafia/ConnectToServer',
                 request_serializer=mafia__pb2.ConnectToServerMessage.SerializeToString,
-                response_deserializer=mafia__pb2.EmptyServerResponse.FromString,
+                response_deserializer=mafia__pb2.CommonServerResponse.FromString,
                 )
         self.DisconnectFromServer = channel.unary_unary(
                 '/Mafia/DisconnectFromServer',
                 request_serializer=mafia__pb2.DisconnectFromServerMessage.SerializeToString,
-                response_deserializer=mafia__pb2.EmptyServerResponse.FromString,
-                )
-        self.GetConnectedUsers = channel.unary_unary(
-                '/Mafia/GetConnectedUsers',
-                request_serializer=mafia__pb2.GetConnectedUsersMessage.SerializeToString,
-                response_deserializer=mafia__pb2.GetConnectedUsersResponse.FromString,
+                response_deserializer=mafia__pb2.CommonServerResponse.FromString,
                 )
         self.GetNewMessage = channel.unary_unary(
                 '/Mafia/GetNewMessage',
@@ -37,7 +32,7 @@ class MafiaStub(object):
         self.SendUserCommand = channel.unary_unary(
                 '/Mafia/SendUserCommand',
                 request_serializer=mafia__pb2.SendUserCommandRequest.SerializeToString,
-                response_deserializer=mafia__pb2.EmptyServerResponse.FromString,
+                response_deserializer=mafia__pb2.CommonServerResponse.FromString,
                 )
 
 
@@ -51,12 +46,6 @@ class MafiaServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def DisconnectFromServer(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def GetConnectedUsers(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -80,17 +69,12 @@ def add_MafiaServicer_to_server(servicer, server):
             'ConnectToServer': grpc.unary_unary_rpc_method_handler(
                     servicer.ConnectToServer,
                     request_deserializer=mafia__pb2.ConnectToServerMessage.FromString,
-                    response_serializer=mafia__pb2.EmptyServerResponse.SerializeToString,
+                    response_serializer=mafia__pb2.CommonServerResponse.SerializeToString,
             ),
             'DisconnectFromServer': grpc.unary_unary_rpc_method_handler(
                     servicer.DisconnectFromServer,
                     request_deserializer=mafia__pb2.DisconnectFromServerMessage.FromString,
-                    response_serializer=mafia__pb2.EmptyServerResponse.SerializeToString,
-            ),
-            'GetConnectedUsers': grpc.unary_unary_rpc_method_handler(
-                    servicer.GetConnectedUsers,
-                    request_deserializer=mafia__pb2.GetConnectedUsersMessage.FromString,
-                    response_serializer=mafia__pb2.GetConnectedUsersResponse.SerializeToString,
+                    response_serializer=mafia__pb2.CommonServerResponse.SerializeToString,
             ),
             'GetNewMessage': grpc.unary_unary_rpc_method_handler(
                     servicer.GetNewMessage,
@@ -100,7 +84,7 @@ def add_MafiaServicer_to_server(servicer, server):
             'SendUserCommand': grpc.unary_unary_rpc_method_handler(
                     servicer.SendUserCommand,
                     request_deserializer=mafia__pb2.SendUserCommandRequest.FromString,
-                    response_serializer=mafia__pb2.EmptyServerResponse.SerializeToString,
+                    response_serializer=mafia__pb2.CommonServerResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -125,7 +109,7 @@ class Mafia(object):
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/Mafia/ConnectToServer',
             mafia__pb2.ConnectToServerMessage.SerializeToString,
-            mafia__pb2.EmptyServerResponse.FromString,
+            mafia__pb2.CommonServerResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -142,24 +126,7 @@ class Mafia(object):
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/Mafia/DisconnectFromServer',
             mafia__pb2.DisconnectFromServerMessage.SerializeToString,
-            mafia__pb2.EmptyServerResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def GetConnectedUsers(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/Mafia/GetConnectedUsers',
-            mafia__pb2.GetConnectedUsersMessage.SerializeToString,
-            mafia__pb2.GetConnectedUsersResponse.FromString,
+            mafia__pb2.CommonServerResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -193,6 +160,6 @@ class Mafia(object):
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/Mafia/SendUserCommand',
             mafia__pb2.SendUserCommandRequest.SerializeToString,
-            mafia__pb2.EmptyServerResponse.FromString,
+            mafia__pb2.CommonServerResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
