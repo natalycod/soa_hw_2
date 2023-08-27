@@ -14,6 +14,7 @@ class MessageType(Enum):
     NONE = 1
     SUCCESS_CONNECTION = 2
     NEW_CONNECTION = 3
+    REMOVED_CONNECTION = 4
 
 class Message:
     def __init__(self):
@@ -28,6 +29,11 @@ class Message:
         self._type = MessageType.SUCCESS_CONNECTION
         self.users = users
     
+    def make_removed_connection_message(self, user_name, users):
+        self._type = MessageType.REMOVED_CONNECTION
+        self.user_name = user_name
+        self.users = users
+    
     def ConvertToGetMessageResponse(self):
         if self._type == MessageType.NONE:
             return mafia_pb2.GetMessageResponse(none_message=mafia_pb2.GetMessageResponse.NoneMessage())
@@ -35,6 +41,8 @@ class Message:
             return mafia_pb2.GetMessageResponse(success_connection=mafia_pb2.GetMessageResponse.SuccessConnectionMessage(current_users=self.users))
         if self._type == MessageType.NEW_CONNECTION:
             return mafia_pb2.GetMessageResponse(new_connection=mafia_pb2.GetMessageResponse.NewConnectionMessage(new_user_name=self.user_name, current_users=self.users))
+        if self._type == MessageType.REMOVED_CONNECTION:
+            return mafia_pb2.GetMessageResponse(removed_connection=mafia_pb2.GetMessageResponse.RemovedConnectionMessage(removed_user_name=self.user_name, current_users=self.users))
 
 class User:
     def __init__(self, name):
@@ -52,29 +60,26 @@ class User:
 class Session:
     def __init__(self):
         self.session_name = ""
-        self.users = []
+        self.users = {}
     
     def add_user(self, user_name):
-        self.users.append(User(user_name))
-        for user in self.users:
+        self.users[user_name] = User(user_name)
+        for name, user in self.users.items():
             message = Message()
-            if (user.name != user_name):
-                message.make_new_connection_message(user_name, [user.name for user in self.users])
+            if (name != user_name):
+                message.make_new_connection_message(user_name, [_name for _name, _user in self.users.items()])
             else:
-                message.make_success_connection_message([user.name for user in self.users])
+                message.make_success_connection_message([_name for _name, _user in self.users.items()])
             user.add_message(message)
+    
+    def remove_user(self, user_name):
+        self.users.pop(user_name)
+        for name, user in self.users.items():
+            message = Message()
+            message.make_lost_connection_message(user_name, [_name for _name, _user in self.users.items()])
 
-    def get_users(self):
-        return [user.name for user in self.users]
-    
-    def add_message_to_all_users(self, message):
-        for user in self.users:
-            user.add_message(message)
-    
     def get_user_message(self, user_name):
-        for user in self.users:
-            if user.name == user_name:
-                return user.get_message()
+        return self.users[user_name].get_message()
 
 class MafiaConnection(mafia_pb2_grpc.MafiaServicer):
     def ConnectToServer(self, request, context):
@@ -89,9 +94,7 @@ class MafiaConnection(mafia_pb2_grpc.MafiaServicer):
             return response
 
     def GetConnectedUsers(self, request, context):
-        result = []
-        for user in current_sessions[request.session_name].users:
-            result.append(user.name)
+        result = [_name for _name, _users in current_sessions[request.session_name].users.items()]
         return mafia_pb2.GetConnectedUsersResponse(user_names=result)
 
     def GetNewMessage(self, request, context):

@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x0bmafia.proto\"A\n\x16\x43onnectToServerMessage\x12\x14\n\x0csession_name\x18\x01 \x01(\t\x12\x11\n\tuser_name\x18\x02 \x01(\t\"0\n\x18GetConnectedUsersMessage\x12\x14\n\x0csession_name\x18\x01 \x01(\t\"/\n\x19GetConnectedUsersResponse\x12\x12\n\nuser_names\x18\x01 \x03(\t\"<\n\x11GetMessageRequest\x12\x14\n\x0csession_name\x18\x01 \x01(\t\x12\x11\n\tuser_name\x18\x02 \x01(\t\"\xf5\x02\n\x12GetMessageResponse\x12\x37\n\x0cnone_message\x18\x01 \x01(\x0b\x32\x1f.GetMessageResponse.NoneMessageH\x00\x12J\n\x12success_connection\x18\x02 \x01(\x0b\x32,.GetMessageResponse.SuccessConnectionMessageH\x00\x12\x42\n\x0enew_connection\x18\x03 \x01(\x0b\x32(.GetMessageResponse.NewConnectionMessageH\x00\x1a\r\n\x0bNoneMessage\x1a\x31\n\x18SuccessConnectionMessage\x12\x15\n\rcurrent_users\x18\x01 \x03(\t\x1a\x44\n\x14NewConnectionMessage\x12\x15\n\rnew_user_name\x18\x01 \x01(\t\x12\x15\n\rcurrent_users\x18\x02 \x03(\tB\x0e\n\x0cmessage_type\"\x15\n\x13\x45mptyServerResponse2\xd5\x01\n\x05Mafia\x12\x42\n\x0f\x43onnectToServer\x12\x17.ConnectToServerMessage\x1a\x14.EmptyServerResponse\"\x00\x12L\n\x11GetConnectedUsers\x12\x19.GetConnectedUsersMessage\x1a\x1a.GetConnectedUsersResponse\"\x00\x12:\n\rGetNewMessage\x12\x12.GetMessageRequest\x1a\x13.GetMessageResponse\"\x00\x62\x06proto3'
+  serialized_pb=b'\n\x0bmafia.proto\"A\n\x16\x43onnectToServerMessage\x12\x14\n\x0csession_name\x18\x01 \x01(\t\x12\x11\n\tuser_name\x18\x02 \x01(\t\"0\n\x18GetConnectedUsersMessage\x12\x14\n\x0csession_name\x18\x01 \x01(\t\"F\n\x1b\x44isconnectFromServerMessage\x12\x14\n\x0csession_name\x18\x01 \x01(\t\x12\x11\n\tuser_name\x18\x02 \x01(\t\"/\n\x19GetConnectedUsersResponse\x12\x12\n\nuser_names\x18\x01 \x03(\t\"<\n\x11GetMessageRequest\x12\x14\n\x0csession_name\x18\x01 \x01(\t\x12\x11\n\tuser_name\x18\x02 \x01(\t\"\x8f\x04\n\x12GetMessageResponse\x12\x37\n\x0cnone_message\x18\x01 \x01(\x0b\x32\x1f.GetMessageResponse.NoneMessageH\x00\x12J\n\x12success_connection\x18\x02 \x01(\x0b\x32,.GetMessageResponse.SuccessConnectionMessageH\x00\x12\x42\n\x0enew_connection\x18\x03 \x01(\x0b\x32(.GetMessageResponse.NewConnectionMessageH\x00\x12J\n\x12removed_connection\x18\x04 \x01(\x0b\x32,.GetMessageResponse.RemovedConnectionMessageH\x00\x1a\r\n\x0bNoneMessage\x1a\x31\n\x18SuccessConnectionMessage\x12\x15\n\rcurrent_users\x18\x01 \x03(\t\x1a\x44\n\x14NewConnectionMessage\x12\x15\n\rnew_user_name\x18\x01 \x01(\t\x12\x15\n\rcurrent_users\x18\x02 \x03(\t\x1aL\n\x18RemovedConnectionMessage\x12\x19\n\x11removed_user_name\x18\x01 \x01(\t\x12\x15\n\rcurrent_users\x18\x02 \x03(\tB\x0e\n\x0cmessage_type\"\x15\n\x13\x45mptyServerResponse2\xa3\x02\n\x05Mafia\x12\x42\n\x0f\x43onnectToServer\x12\x17.ConnectToServerMessage\x1a\x14.EmptyServerResponse\"\x00\x12L\n\x14\x44isconnectFromServer\x12\x1c.DisconnectFromServerMessage\x1a\x14.EmptyServerResponse\"\x00\x12L\n\x11GetConnectedUsers\x12\x19.GetConnectedUsersMessage\x1a\x1a.GetConnectedUsersResponse\"\x00\x12:\n\rGetNewMessage\x12\x12.GetMessageRequest\x1a\x13.GetMessageResponse\"\x00\x62\x06proto3'
 )
 
 
@@ -96,6 +96,45 @@ _GETCONNECTEDUSERSMESSAGE = _descriptor.Descriptor(
 )
 
 
+_DISCONNECTFROMSERVERMESSAGE = _descriptor.Descriptor(
+  name='DisconnectFromServerMessage',
+  full_name='DisconnectFromServerMessage',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='session_name', full_name='DisconnectFromServerMessage.session_name', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='user_name', full_name='DisconnectFromServerMessage.user_name', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=132,
+  serialized_end=202,
+)
+
+
 _GETCONNECTEDUSERSRESPONSE = _descriptor.Descriptor(
   name='GetConnectedUsersResponse',
   full_name='GetConnectedUsersResponse',
@@ -123,8 +162,8 @@ _GETCONNECTEDUSERSRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=132,
-  serialized_end=179,
+  serialized_start=204,
+  serialized_end=251,
 )
 
 
@@ -162,8 +201,8 @@ _GETMESSAGEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=181,
-  serialized_end=241,
+  serialized_start=253,
+  serialized_end=313,
 )
 
 
@@ -187,8 +226,8 @@ _GETMESSAGERESPONSE_NONEMESSAGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=467,
-  serialized_end=480,
+  serialized_start=615,
+  serialized_end=628,
 )
 
 _GETMESSAGERESPONSE_SUCCESSCONNECTIONMESSAGE = _descriptor.Descriptor(
@@ -218,8 +257,8 @@ _GETMESSAGERESPONSE_SUCCESSCONNECTIONMESSAGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=482,
-  serialized_end=531,
+  serialized_start=630,
+  serialized_end=679,
 )
 
 _GETMESSAGERESPONSE_NEWCONNECTIONMESSAGE = _descriptor.Descriptor(
@@ -256,8 +295,46 @@ _GETMESSAGERESPONSE_NEWCONNECTIONMESSAGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=533,
-  serialized_end=601,
+  serialized_start=681,
+  serialized_end=749,
+)
+
+_GETMESSAGERESPONSE_REMOVEDCONNECTIONMESSAGE = _descriptor.Descriptor(
+  name='RemovedConnectionMessage',
+  full_name='GetMessageResponse.RemovedConnectionMessage',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='removed_user_name', full_name='GetMessageResponse.RemovedConnectionMessage.removed_user_name', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='current_users', full_name='GetMessageResponse.RemovedConnectionMessage.current_users', index=1,
+      number=2, type=9, cpp_type=9, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=751,
+  serialized_end=827,
 )
 
 _GETMESSAGERESPONSE = _descriptor.Descriptor(
@@ -289,10 +366,17 @@ _GETMESSAGERESPONSE = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='removed_connection', full_name='GetMessageResponse.removed_connection', index=3,
+      number=4, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
-  nested_types=[_GETMESSAGERESPONSE_NONEMESSAGE, _GETMESSAGERESPONSE_SUCCESSCONNECTIONMESSAGE, _GETMESSAGERESPONSE_NEWCONNECTIONMESSAGE, ],
+  nested_types=[_GETMESSAGERESPONSE_NONEMESSAGE, _GETMESSAGERESPONSE_SUCCESSCONNECTIONMESSAGE, _GETMESSAGERESPONSE_NEWCONNECTIONMESSAGE, _GETMESSAGERESPONSE_REMOVEDCONNECTIONMESSAGE, ],
   enum_types=[
   ],
   serialized_options=None,
@@ -306,8 +390,8 @@ _GETMESSAGERESPONSE = _descriptor.Descriptor(
       create_key=_descriptor._internal_create_key,
     fields=[]),
   ],
-  serialized_start=244,
-  serialized_end=617,
+  serialized_start=316,
+  serialized_end=843,
 )
 
 
@@ -331,16 +415,18 @@ _EMPTYSERVERRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=619,
-  serialized_end=640,
+  serialized_start=845,
+  serialized_end=866,
 )
 
 _GETMESSAGERESPONSE_NONEMESSAGE.containing_type = _GETMESSAGERESPONSE
 _GETMESSAGERESPONSE_SUCCESSCONNECTIONMESSAGE.containing_type = _GETMESSAGERESPONSE
 _GETMESSAGERESPONSE_NEWCONNECTIONMESSAGE.containing_type = _GETMESSAGERESPONSE
+_GETMESSAGERESPONSE_REMOVEDCONNECTIONMESSAGE.containing_type = _GETMESSAGERESPONSE
 _GETMESSAGERESPONSE.fields_by_name['none_message'].message_type = _GETMESSAGERESPONSE_NONEMESSAGE
 _GETMESSAGERESPONSE.fields_by_name['success_connection'].message_type = _GETMESSAGERESPONSE_SUCCESSCONNECTIONMESSAGE
 _GETMESSAGERESPONSE.fields_by_name['new_connection'].message_type = _GETMESSAGERESPONSE_NEWCONNECTIONMESSAGE
+_GETMESSAGERESPONSE.fields_by_name['removed_connection'].message_type = _GETMESSAGERESPONSE_REMOVEDCONNECTIONMESSAGE
 _GETMESSAGERESPONSE.oneofs_by_name['message_type'].fields.append(
   _GETMESSAGERESPONSE.fields_by_name['none_message'])
 _GETMESSAGERESPONSE.fields_by_name['none_message'].containing_oneof = _GETMESSAGERESPONSE.oneofs_by_name['message_type']
@@ -350,8 +436,12 @@ _GETMESSAGERESPONSE.fields_by_name['success_connection'].containing_oneof = _GET
 _GETMESSAGERESPONSE.oneofs_by_name['message_type'].fields.append(
   _GETMESSAGERESPONSE.fields_by_name['new_connection'])
 _GETMESSAGERESPONSE.fields_by_name['new_connection'].containing_oneof = _GETMESSAGERESPONSE.oneofs_by_name['message_type']
+_GETMESSAGERESPONSE.oneofs_by_name['message_type'].fields.append(
+  _GETMESSAGERESPONSE.fields_by_name['removed_connection'])
+_GETMESSAGERESPONSE.fields_by_name['removed_connection'].containing_oneof = _GETMESSAGERESPONSE.oneofs_by_name['message_type']
 DESCRIPTOR.message_types_by_name['ConnectToServerMessage'] = _CONNECTTOSERVERMESSAGE
 DESCRIPTOR.message_types_by_name['GetConnectedUsersMessage'] = _GETCONNECTEDUSERSMESSAGE
+DESCRIPTOR.message_types_by_name['DisconnectFromServerMessage'] = _DISCONNECTFROMSERVERMESSAGE
 DESCRIPTOR.message_types_by_name['GetConnectedUsersResponse'] = _GETCONNECTEDUSERSRESPONSE
 DESCRIPTOR.message_types_by_name['GetMessageRequest'] = _GETMESSAGEREQUEST
 DESCRIPTOR.message_types_by_name['GetMessageResponse'] = _GETMESSAGERESPONSE
@@ -371,6 +461,13 @@ GetConnectedUsersMessage = _reflection.GeneratedProtocolMessageType('GetConnecte
   # @@protoc_insertion_point(class_scope:GetConnectedUsersMessage)
   })
 _sym_db.RegisterMessage(GetConnectedUsersMessage)
+
+DisconnectFromServerMessage = _reflection.GeneratedProtocolMessageType('DisconnectFromServerMessage', (_message.Message,), {
+  'DESCRIPTOR' : _DISCONNECTFROMSERVERMESSAGE,
+  '__module__' : 'mafia_pb2'
+  # @@protoc_insertion_point(class_scope:DisconnectFromServerMessage)
+  })
+_sym_db.RegisterMessage(DisconnectFromServerMessage)
 
 GetConnectedUsersResponse = _reflection.GeneratedProtocolMessageType('GetConnectedUsersResponse', (_message.Message,), {
   'DESCRIPTOR' : _GETCONNECTEDUSERSRESPONSE,
@@ -408,6 +505,13 @@ GetMessageResponse = _reflection.GeneratedProtocolMessageType('GetMessageRespons
     # @@protoc_insertion_point(class_scope:GetMessageResponse.NewConnectionMessage)
     })
   ,
+
+  'RemovedConnectionMessage' : _reflection.GeneratedProtocolMessageType('RemovedConnectionMessage', (_message.Message,), {
+    'DESCRIPTOR' : _GETMESSAGERESPONSE_REMOVEDCONNECTIONMESSAGE,
+    '__module__' : 'mafia_pb2'
+    # @@protoc_insertion_point(class_scope:GetMessageResponse.RemovedConnectionMessage)
+    })
+  ,
   'DESCRIPTOR' : _GETMESSAGERESPONSE,
   '__module__' : 'mafia_pb2'
   # @@protoc_insertion_point(class_scope:GetMessageResponse)
@@ -416,6 +520,7 @@ _sym_db.RegisterMessage(GetMessageResponse)
 _sym_db.RegisterMessage(GetMessageResponse.NoneMessage)
 _sym_db.RegisterMessage(GetMessageResponse.SuccessConnectionMessage)
 _sym_db.RegisterMessage(GetMessageResponse.NewConnectionMessage)
+_sym_db.RegisterMessage(GetMessageResponse.RemovedConnectionMessage)
 
 EmptyServerResponse = _reflection.GeneratedProtocolMessageType('EmptyServerResponse', (_message.Message,), {
   'DESCRIPTOR' : _EMPTYSERVERRESPONSE,
@@ -433,8 +538,8 @@ _MAFIA = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=643,
-  serialized_end=856,
+  serialized_start=869,
+  serialized_end=1160,
   methods=[
   _descriptor.MethodDescriptor(
     name='ConnectToServer',
@@ -447,9 +552,19 @@ _MAFIA = _descriptor.ServiceDescriptor(
     create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
+    name='DisconnectFromServer',
+    full_name='Mafia.DisconnectFromServer',
+    index=1,
+    containing_service=None,
+    input_type=_DISCONNECTFROMSERVERMESSAGE,
+    output_type=_EMPTYSERVERRESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
     name='GetConnectedUsers',
     full_name='Mafia.GetConnectedUsers',
-    index=1,
+    index=2,
     containing_service=None,
     input_type=_GETCONNECTEDUSERSMESSAGE,
     output_type=_GETCONNECTEDUSERSRESPONSE,
@@ -459,7 +574,7 @@ _MAFIA = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='GetNewMessage',
     full_name='Mafia.GetNewMessage',
-    index=2,
+    index=3,
     containing_service=None,
     input_type=_GETMESSAGEREQUEST,
     output_type=_GETMESSAGERESPONSE,

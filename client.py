@@ -27,6 +27,9 @@ class UserSession:
 
         session_id = queue.get()
 
+    def __exit__(self):
+        self._stub.DisconnectFromServer(mafia_pb2.DisconnectToServerMessage(session_name=self.session_name, user_name=self.user_name))
+
     def listen_for_messages(self):
         self._stub.ConnectToServer(mafia_pb2.ConnectToServerMessage(session_name=self.session_name, user_name=self.user_name))
 
@@ -37,7 +40,10 @@ class UserSession:
                 print ("Current users: " + ", ".join(response.success_connection.current_users))
             if response.HasField("new_connection"):
                 print("User " + response.new_connection.new_user_name + " connected to session")
-                print ("Current users: " + ", ".join(response.new_connection.current_users))
+                print("Current users: " + ", ".join(response.new_connection.current_users))
+            if response.HasField("removed_connection"):
+                print("User " + response.removed_connection.removed_user_name + " disconnected from session")
+                print("Current users: " + ", ".join(response.removed_connection.current_users))
 
 print("Hi! Wanna play some mafia?")
 print("Enter name of session you want to connect to")

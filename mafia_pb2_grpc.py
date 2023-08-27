@@ -19,6 +19,11 @@ class MafiaStub(object):
                 request_serializer=mafia__pb2.ConnectToServerMessage.SerializeToString,
                 response_deserializer=mafia__pb2.EmptyServerResponse.FromString,
                 )
+        self.DisconnectFromServer = channel.unary_unary(
+                '/Mafia/DisconnectFromServer',
+                request_serializer=mafia__pb2.DisconnectFromServerMessage.SerializeToString,
+                response_deserializer=mafia__pb2.EmptyServerResponse.FromString,
+                )
         self.GetConnectedUsers = channel.unary_unary(
                 '/Mafia/GetConnectedUsers',
                 request_serializer=mafia__pb2.GetConnectedUsersMessage.SerializeToString,
@@ -35,6 +40,12 @@ class MafiaServicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def ConnectToServer(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def DisconnectFromServer(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -58,6 +69,11 @@ def add_MafiaServicer_to_server(servicer, server):
             'ConnectToServer': grpc.unary_unary_rpc_method_handler(
                     servicer.ConnectToServer,
                     request_deserializer=mafia__pb2.ConnectToServerMessage.FromString,
+                    response_serializer=mafia__pb2.EmptyServerResponse.SerializeToString,
+            ),
+            'DisconnectFromServer': grpc.unary_unary_rpc_method_handler(
+                    servicer.DisconnectFromServer,
+                    request_deserializer=mafia__pb2.DisconnectFromServerMessage.FromString,
                     response_serializer=mafia__pb2.EmptyServerResponse.SerializeToString,
             ),
             'GetConnectedUsers': grpc.unary_unary_rpc_method_handler(
@@ -93,6 +109,23 @@ class Mafia(object):
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/Mafia/ConnectToServer',
             mafia__pb2.ConnectToServerMessage.SerializeToString,
+            mafia__pb2.EmptyServerResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def DisconnectFromServer(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/Mafia/DisconnectFromServer',
+            mafia__pb2.DisconnectFromServerMessage.SerializeToString,
             mafia__pb2.EmptyServerResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
