@@ -130,8 +130,24 @@ class Session:
                 user.ready_to_end_night = True
                 self.ready_to_end_night_count += 1
             message = Message()
+            rules_message = Message()
+            alive_message = Message()
+            alive_players = self.get_alive_players()
+
             message.make_server_message("--- NIGHT TIME ---", True)
             user.add_message(message)
+
+            if user.role == Role.MAFIA:
+                rules_message.make_server_message("You must kill somebody (\"kill\" and name of your victim) or write \"pass\"", False)
+                user.add_message(rules_message)
+                alive_message.make_server_message("Living players: " + ", ".join(alive_players), False)
+                user.add_message(alive_message)
+            if user.role == Role.COMISSAR:
+                rules_message.make_server_message("You must check somebody (\"check\" and name of your victim) or write \"pass\"", False)
+                user.add_message(rules_message)
+                alive_message.make_server_message("Living players: " + ", ".join(alive_players), False)
+                user.add_message(alive_message)
+
         return True
 
     def _try_to_end_night(self):
@@ -186,15 +202,6 @@ class Session:
         if user_name not in self.users:
             return Message()
         return self.users[user_name].get_message()
-
-    def send_user_message(self, user_name, text):
-        for name, user in self.users.items():
-            message = Message()
-            if name == user_name:
-                message.make_user_message(user_name, text, True)
-            else:
-                message.make_user_message(user_name, text, False)
-            user.add_message(message)
     
     def get_alive_players(self):
         result = []
@@ -206,25 +213,56 @@ class Session:
     def end_day(self, user_name):
         if user_name not in self.users:
             return
-        if not self.users[user_name].ready_to_end_day:
-            self.ready_to_end_day_count += 1
-            self.users[user_name].ready_to_end_day = True
-    
-    def process_victim(self, user_name, victim_name):
+        if self.game_stage != GameStage.DAY:
+            return "You can't end day, because it's not day now"
+        if self.users[user_name].ready_to_end_day:
+            return "You already told that you are ready to end the day"
+        self.ready_to_end_day_count += 1
+        self.users[user_name].ready_to_end_day = True
+
+    def check(self, user_name, check_name):
+        if self.game_stage != GameStage.NIGHT:
+            return "You can check users only at night"
+        if self.users[user_name].role != Role.COMISSAR:
+            return "Only comissar can check users"
         if self.users[user_name].ready_to_end_night:
-            return []
+            return "You already checked someone this night! Wait for the next one"
         self.users[user_name].ready_to_end_night = True
         self.ready_to_end_night_count += 1
+        message = Message()
+        if self.users[check_name].role == Role.MAFIA:
+            message.make_server_message("Congrats! User " + check_name + " is mafia", False)
+        else:
+            message.make_server_message("Sorry! User " + check_name + " is not mafia. Try again next night", False)
+        self.users[user_name].add_message(message)
+    
+    def kill(self, user_name, kill_name):
+        if self.game_stage != GameStage.NIGHT:
+            return "You can kill users only at night"
+        if self.users[user_name].role != Role.MAFIA:
+            return "Only mafia can kill users"
+        if self.users[user_name].ready_to_end_night:
+            return "You already killed someone this night! Wait for the next one"
+        self.users[user_name].ready_to_end_night = True
+        self.ready_to_end_night_count += 1
+        self.users[kill_name].alive = False
+        message = Message()
+        message.make_server_message("Fine! Consider " + kill_name + " dead", False)
+        self.users[user_name].add_message(message)
 
-        if self.users[user_name].role == Role.MAFIA:
-            self.users[victim_name].alive = False
-            return [Role.MAFIA]
-        if self.users[user_name].role == Role.COMISSAR:
-            if self.users[victim_name].role == Role.MAFIA:
-                return [Role.COMISSAR, True]
+    def send_chat_message(self, user_name, text):
+        if self.game_stage == GameStage.NIGHT:
+            return "You can't chat at night"
+        if not self.users[user_name].alive:
+            return "You can't chat, you're dead"
+        for name, user in self.users.items():
+            message = Message()
+            if name == user_name:
+                message.make_user_message(user_name, text, True)
             else:
-                return [Role.COMISSAR, False]
-        return []
+                message.make_user_message(user_name, text, False)
+            user.add_message(message)
+
 
 class MafiaConnection(mafia_pb2_grpc.MafiaServicer):
     def ConnectToServer(self, request, context):
@@ -243,30 +281,29 @@ class MafiaConnection(mafia_pb2_grpc.MafiaServicer):
         message = current_sessions[request.session_name].get_user_message(request.user_name)
         return message.ConvertToGetMessageResponse()
 
-    def SendUserCommand(self, request, context):
-        if request.HasField("chat_message"):
-            if current_sessions[request.chat_message.session_name].game_stage == GameStage.NIGHT:
-                return mafia_pb2.CommonServerResponse(common_error=mafia_pb2.CommonServerResponse.CommonError(error_text="You can't use chat at night"))
-            current_sessions[request.chat_message.session_name].send_user_message(request.chat_message.user_name, request.chat_message.text)
-            return mafia_pb2.CommonServerResponse(empty_message=mafia_pb2.CommonServerResponse.EmptyMessage())
-        if request.HasField("end_day"):
-            if current_sessions[request.end_day.session_name].game_stage != GameStage.DAY:
-                return mafia_pb2.CommonServerResponse(common_error=mafia_pb2.CommonServerResponse.CommonError(error_text="You can't end day, because it's not day now"))
-            current_sessions[request.end_day.session_name].end_day(request.end_day.user_name)
-            return mafia_pb2.CommonServerResponse(empty_message=mafia_pb2.CommonServerResponse.EmptyMessage())
-    
-    def GetAlivePlayers(self, request, context):
-        return mafia_pb2.GetAlivePlayersResponse(players=current_sessions[request.session_name].get_alive_players())
+    def CheckUser(self, request, context):
+        resp = current_sessions[request.session_name].check(request.user_name, request.check_name)
+        if resp is not None:
+            return mafia_pb2.CommonServerResponse(common_error=mafia_pb2.CommonServerResponse.CommonError(error_text=resp))
+        return mafia_pb2.CommonServerResponse(empty_message=mafia_pb2.CommonServerResponse.EmptyMessage())
 
-    def SendVictimName(self, request, context):
-        resp = current_sessions[request.session_name].process_victim(request.user_name, request.victim_name)
-        if len(resp) == 0:
-            return mafia_pb2.SendVictimNameResponse(already_chose=mafia_pb2.SendVictimNameResponse.AlreadyChoseResponse())
-        if resp[0] == Role.MAFIA:
-            return mafia_pb2.SendVictimNameResponse(mafia_response=mafia_pb2.SendVictimNameResponse.MafiaResponse(chosen_victim=request.victim_name))
-        elif resp[0] == Role.COMISSAR:
-            return mafia_pb2.SendVictimNameResponse(comissar_response=mafia_pb2.SendVictimNameResponse.ComissarResponse(chosen_victim=request.victim_name, is_mafia=resp[1]))
+    def KillUser(self, request, context):
+        resp = current_sessions[request.session_name].kill(request.user_name, request.kill_name)
+        if resp is not None:
+            return mafia_pb2.CommonServerResponse(common_error=mafia_pb2.CommonServerResponse.CommonError(error_text=resp))
+        return mafia_pb2.CommonServerResponse(empty_message=mafia_pb2.CommonServerResponse.EmptyMessage())
 
+    def SendChatMessage(self, request, context):
+        resp = current_sessions[request.session_name].send_chat_message(request.user_name, request.text)
+        if resp is not None:
+            return mafia_pb2.CommonServerResponse(common_error=mafia_pb2.CommonServerResponse.CommonError(error_text=resp))
+        return mafia_pb2.CommonServerResponse(empty_message=mafia_pb2.CommonServerResponse.EmptyMessage())
+
+    def EndDay(self, request, context):
+        resp = current_sessions[request.session_name].end_day(request.user_name)
+        if resp is not None:
+            return mafia_pb2.CommonServerResponse(common_error=mafia_pb2.CommonServerResponse.CommonError(error_text=resp))
+        return mafia_pb2.CommonServerResponse(empty_message=mafia_pb2.CommonServerResponse.EmptyMessage())
 
 port = "50051"
 server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))

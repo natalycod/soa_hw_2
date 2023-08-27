@@ -3,9 +3,10 @@ syntax = "proto3";
 service Mafia {
     rpc ConnectToServer(ConnectToServerMessage) returns (CommonServerResponse) {}
     rpc GetNewMessage(GetMessageRequest) returns (GetMessageResponse) {}
-    rpc SendUserCommand(SendUserCommandRequest) returns (CommonServerResponse) {}
-    rpc GetAlivePlayers(GetAlivePlayersRequest) returns (GetAlivePlayersResponse) {}
-    rpc SendVictimName(SendVictimNameRequest) returns (SendVictimNameResponse) {}
+    rpc CheckUser(CheckUserRequest) returns (CommonServerResponse) {}
+    rpc KillUser(KillUserRequest) returns (CommonServerResponse) {}
+    rpc SendChatMessage(SendChatMessageRequest) returns (CommonServerResponse) {}
+    rpc EndDay(EndDayRequest) returns (CommonServerResponse) {}
 }
 
 message ConnectToServerMessage {
@@ -18,37 +19,27 @@ message GetMessageRequest {
     string user_name = 2;
 }
 
-message GetAlivePlayersRequest {
-    string session_name = 1;
-}
-
-message GetAlivePlayersResponse {
-    repeated string players = 1;
-}
-
-message SendVictimNameRequest {
+message CheckUserRequest {
     string session_name = 1;
     string user_name = 2;
-    string victim_name = 3;
+    string check_name = 3;
 }
 
-message SendVictimNameResponse {
-    oneof message_type {
-        AlreadyChoseResponse already_chose = 1;
-        MafiaResponse mafia_response = 2;
-        ComissarResponse comissar_response = 3;
-    }
+message KillUserRequest {
+    string session_name = 1;
+    string user_name = 2;
+    string kill_name = 3;
+}
 
-    message AlreadyChoseResponse {}
+message SendChatMessageRequest {
+    string session_name = 1;
+    string user_name = 2;
+    string text = 3;
+}
 
-    message MafiaResponse {
-        string chosen_victim = 1;
-    }
-
-    message ComissarResponse {
-        string chosen_victim = 1;
-        bool is_mafia = 2;
-    }
+message EndDayRequest {
+    string session_name = 1;
+    string user_name = 2;
 }
 
 message GetMessageResponse {
@@ -82,23 +73,5 @@ message CommonServerResponse {
 
     message CommonError {
         string error_text = 1;
-    }
-}
-
-message SendUserCommandRequest {
-    oneof message_type {
-        ChatMessage chat_message = 1;
-        EndDayMessage end_day = 2;
-    }
-
-    message ChatMessage {
-        string session_name = 1;
-        string user_name = 2;
-        string text = 3;
-    }
-
-    message EndDayMessage {
-        string session_name = 1;
-        string user_name = 2;
     }
 }

@@ -60,24 +60,21 @@ class UserSession:
         while True:
             command = input()
             if command.startswith("chat "):
-                response = self._stub.SendUserCommand(mafia_pb2.SendUserCommandRequest(chat_message=mafia_pb2.SendUserCommandRequest.ChatMessage(session_name=self.session_name, user_name=self.user_name, text=command[5:])))
+                response = self._stub.SendChatMessage(mafia_pb2.SendChatMessageRequest(session_name=self.session_name, user_name=self.user_name, text=command[5:]))
                 if response.HasField("common_error"):
-                    print("error: " + response.common_error.error_text)
+                    print(bcolors.FAIL + "error: " + response.common_error.error_text + bcolors.ENDC)
             if command.startswith("end_day"):
-                response = self._stub.SendUserCommand(mafia_pb2.SendUserCommandRequest(end_day=mafia_pb2.SendUserCommandRequest.EndDayMessage(session_name=self.session_name, user_name=self.user_name)))
+                response = self._stub.EndDay(mafia_pb2.EndDayRequest(session_name=self.session_name, user_name=self.user_name))
                 if response.HasField("common_error"):
-                    print("error: " + response.common_error.error_text)
-            if command.startswith("victim "):
-                response = self._stub.SendVictimName(mafia_pb2.SendVictimNameRequest(session_name=self.session_name, user_name=self.user_name, victim_name=command[7:]))
-                if response.HasField("comissar_response"):
-                    if response.comissar_response.is_mafia:
-                        print("Congratulations! " + response.comissar_response.chosen_victim + " is mafia!")
-                    else:
-                        print("Sorry, " + response.comissar_response.chosen_victim + " is not mafia. Try again next night.")
-                if response.HasField("mafia_response"):
-                    print("Fine, you can consider " + response.mafia_response.chosen_victim + " dead.")
-                if response.HasField("already_chose"):
-                    print("You already chose your victim. Try again next night.")
+                    print(bcolors.FAIL + "error: " + response.common_error.error_text + bcolors.ENDC)
+            if command.startswith("check "):
+                response = self._stub.CheckUser(mafia_pb2.CheckUserRequest(session_name=self.session_name, user_name=self.user_name, check_name=command[6:]))
+                if response.HasField("common_error"):
+                    print(bcolors.FAIL + "error: " + response.common_error.error_text + bcolors.ENDC)
+            if command.startswith("kill "):
+                response = self._stub.KillUser(mafia_pb2.KillUserRequest(session_name=self.session_name, user_name=self.user_name, kill_name=command[5:]))
+                if response.HasField("common_error"):
+                    print(bcolors.FAIL + "error: " + response.common_error.error_text + bcolors.ENDC)
 
 print("Hi! Wanna play some mafia?")
 print("Enter name of session you want to connect to")
