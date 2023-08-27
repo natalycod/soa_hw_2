@@ -1,8 +1,9 @@
 syntax = "proto3";
 
 service Mafia {
-    rpc ConnectToServer(ConnectToServerMessage) returns (stream ServerResponse) {}
+    rpc ConnectToServer(ConnectToServerMessage) returns (EmptyServerResponse) {}
     rpc GetConnectedUsers(GetConnectedUsersMessage) returns (GetConnectedUsersResponse) {}
+    rpc GetNewMessage(GetMessageRequest) returns (GetMessageResponse) {}
 }
 
 message ConnectToServerMessage {
@@ -18,22 +19,28 @@ message GetConnectedUsersResponse {
     repeated string user_names = 1;
 }
 
-message ServerResponse {
+message GetMessageRequest {
+    string session_name = 1;
+    string user_name = 2;
+}
+
+message GetMessageResponse {
     oneof message_type {
-        ErrorMessage error = 1;
-        NewConnectionMessage new_connection = 2;
+        NoneMessage none_message = 1;
+        SuccessConnectionMessage success_connection = 2;
+        NewConnectionMessage new_connection = 3;
     }
 
-    message ErrorMessage {
-        ErrorType error_type = 1;
+    message NoneMessage {}
 
-        enum ErrorType {
-            USER_EXISTS = 0;
-        }
+    message SuccessConnectionMessage {
+        repeated string current_users = 1;
     }
-    
+
     message NewConnectionMessage {
         string new_user_name = 1;
         repeated string current_users = 2;
     }
 }
+
+message EmptyServerResponse {}

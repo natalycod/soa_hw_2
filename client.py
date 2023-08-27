@@ -20,6 +20,7 @@ class UserSession:
         self._channel = channel
         self._consumer_future = None
         self._stub = mafia_pb2_grpc.MafiaStub(self._channel)
+        self._queue = Queue()
 
         queue = Queue()
         threading.Thread(target=self.listen_for_messages, daemon=False, args=[]).start()
@@ -27,14 +28,16 @@ class UserSession:
         session_id = queue.get()
 
     def listen_for_messages(self):
-        responses = self._stub.ConnectToServer(mafia_pb2.ConnectToServerMessage(session_name=self.session_name, user_name=self.user_name))
-        for response in responses:
+        self._stub.ConnectToServer(mafia_pb2.ConnectToServerMessage(session_name=self.session_name, user_name=self.user_name))
+
+        while True:
+            response = self._stub.GetNewMessage(mafia_pb2.GetMessageRequest(session_name=self.session_name, user_name=self.user_name))
+            if response.HasField("success_connection"):
+                print("You're successfully connected to the session!")
+                print ("Current users: " + ", ".join(response.success_connection.current_users))
             if response.HasField("new_connection"):
                 print("User " + response.new_connection.new_user_name + " connected to session")
-                print("Current users: ", response.new_connection.current_users)
-            elif response.HasField("error"):
-                if response.error.error_type == mafia_pb2.ServerResponse.ErrorMessage.USER_EXISTS:
-                    print("User with this name already exists")
+                print ("Current users: " + ", ".join(response.new_connection.current_users))
 
 print("Hi! Wanna play some mafia?")
 print("Enter name of session you want to connect to")

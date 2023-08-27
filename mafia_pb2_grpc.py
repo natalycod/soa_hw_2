@@ -14,15 +14,20 @@ class MafiaStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.ConnectToServer = channel.unary_stream(
+        self.ConnectToServer = channel.unary_unary(
                 '/Mafia/ConnectToServer',
                 request_serializer=mafia__pb2.ConnectToServerMessage.SerializeToString,
-                response_deserializer=mafia__pb2.ServerResponse.FromString,
+                response_deserializer=mafia__pb2.EmptyServerResponse.FromString,
                 )
         self.GetConnectedUsers = channel.unary_unary(
                 '/Mafia/GetConnectedUsers',
                 request_serializer=mafia__pb2.GetConnectedUsersMessage.SerializeToString,
                 response_deserializer=mafia__pb2.GetConnectedUsersResponse.FromString,
+                )
+        self.GetNewMessage = channel.unary_unary(
+                '/Mafia/GetNewMessage',
+                request_serializer=mafia__pb2.GetMessageRequest.SerializeToString,
+                response_deserializer=mafia__pb2.GetMessageResponse.FromString,
                 )
 
 
@@ -41,18 +46,29 @@ class MafiaServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def GetNewMessage(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_MafiaServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'ConnectToServer': grpc.unary_stream_rpc_method_handler(
+            'ConnectToServer': grpc.unary_unary_rpc_method_handler(
                     servicer.ConnectToServer,
                     request_deserializer=mafia__pb2.ConnectToServerMessage.FromString,
-                    response_serializer=mafia__pb2.ServerResponse.SerializeToString,
+                    response_serializer=mafia__pb2.EmptyServerResponse.SerializeToString,
             ),
             'GetConnectedUsers': grpc.unary_unary_rpc_method_handler(
                     servicer.GetConnectedUsers,
                     request_deserializer=mafia__pb2.GetConnectedUsersMessage.FromString,
                     response_serializer=mafia__pb2.GetConnectedUsersResponse.SerializeToString,
+            ),
+            'GetNewMessage': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetNewMessage,
+                    request_deserializer=mafia__pb2.GetMessageRequest.FromString,
+                    response_serializer=mafia__pb2.GetMessageResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -75,9 +91,9 @@ class Mafia(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_stream(request, target, '/Mafia/ConnectToServer',
+        return grpc.experimental.unary_unary(request, target, '/Mafia/ConnectToServer',
             mafia__pb2.ConnectToServerMessage.SerializeToString,
-            mafia__pb2.ServerResponse.FromString,
+            mafia__pb2.EmptyServerResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -95,5 +111,22 @@ class Mafia(object):
         return grpc.experimental.unary_unary(request, target, '/Mafia/GetConnectedUsers',
             mafia__pb2.GetConnectedUsersMessage.SerializeToString,
             mafia__pb2.GetConnectedUsersResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def GetNewMessage(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/Mafia/GetNewMessage',
+            mafia__pb2.GetMessageRequest.SerializeToString,
+            mafia__pb2.GetMessageResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
