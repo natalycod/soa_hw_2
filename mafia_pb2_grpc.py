@@ -19,11 +19,6 @@ class MafiaStub(object):
                 request_serializer=mafia__pb2.ConnectToServerMessage.SerializeToString,
                 response_deserializer=mafia__pb2.CommonServerResponse.FromString,
                 )
-        self.DisconnectFromServer = channel.unary_unary(
-                '/Mafia/DisconnectFromServer',
-                request_serializer=mafia__pb2.DisconnectFromServerMessage.SerializeToString,
-                response_deserializer=mafia__pb2.CommonServerResponse.FromString,
-                )
         self.GetNewMessage = channel.unary_unary(
                 '/Mafia/GetNewMessage',
                 request_serializer=mafia__pb2.GetMessageRequest.SerializeToString,
@@ -34,18 +29,22 @@ class MafiaStub(object):
                 request_serializer=mafia__pb2.SendUserCommandRequest.SerializeToString,
                 response_deserializer=mafia__pb2.CommonServerResponse.FromString,
                 )
+        self.GetAlivePlayers = channel.unary_unary(
+                '/Mafia/GetAlivePlayers',
+                request_serializer=mafia__pb2.GetAlivePlayersRequest.SerializeToString,
+                response_deserializer=mafia__pb2.GetAlivePlayersResponse.FromString,
+                )
+        self.SendVictimName = channel.unary_unary(
+                '/Mafia/SendVictimName',
+                request_serializer=mafia__pb2.SendVictimNameRequest.SerializeToString,
+                response_deserializer=mafia__pb2.SendVictimNameResponse.FromString,
+                )
 
 
 class MafiaServicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def ConnectToServer(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def DisconnectFromServer(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -63,17 +62,24 @@ class MafiaServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def GetAlivePlayers(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def SendVictimName(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_MafiaServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'ConnectToServer': grpc.unary_unary_rpc_method_handler(
                     servicer.ConnectToServer,
                     request_deserializer=mafia__pb2.ConnectToServerMessage.FromString,
-                    response_serializer=mafia__pb2.CommonServerResponse.SerializeToString,
-            ),
-            'DisconnectFromServer': grpc.unary_unary_rpc_method_handler(
-                    servicer.DisconnectFromServer,
-                    request_deserializer=mafia__pb2.DisconnectFromServerMessage.FromString,
                     response_serializer=mafia__pb2.CommonServerResponse.SerializeToString,
             ),
             'GetNewMessage': grpc.unary_unary_rpc_method_handler(
@@ -85,6 +91,16 @@ def add_MafiaServicer_to_server(servicer, server):
                     servicer.SendUserCommand,
                     request_deserializer=mafia__pb2.SendUserCommandRequest.FromString,
                     response_serializer=mafia__pb2.CommonServerResponse.SerializeToString,
+            ),
+            'GetAlivePlayers': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetAlivePlayers,
+                    request_deserializer=mafia__pb2.GetAlivePlayersRequest.FromString,
+                    response_serializer=mafia__pb2.GetAlivePlayersResponse.SerializeToString,
+            ),
+            'SendVictimName': grpc.unary_unary_rpc_method_handler(
+                    servicer.SendVictimName,
+                    request_deserializer=mafia__pb2.SendVictimNameRequest.FromString,
+                    response_serializer=mafia__pb2.SendVictimNameResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -109,23 +125,6 @@ class Mafia(object):
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/Mafia/ConnectToServer',
             mafia__pb2.ConnectToServerMessage.SerializeToString,
-            mafia__pb2.CommonServerResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def DisconnectFromServer(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/Mafia/DisconnectFromServer',
-            mafia__pb2.DisconnectFromServerMessage.SerializeToString,
             mafia__pb2.CommonServerResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
@@ -161,5 +160,39 @@ class Mafia(object):
         return grpc.experimental.unary_unary(request, target, '/Mafia/SendUserCommand',
             mafia__pb2.SendUserCommandRequest.SerializeToString,
             mafia__pb2.CommonServerResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def GetAlivePlayers(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/Mafia/GetAlivePlayers',
+            mafia__pb2.GetAlivePlayersRequest.SerializeToString,
+            mafia__pb2.GetAlivePlayersResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def SendVictimName(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/Mafia/SendVictimName',
+            mafia__pb2.SendVictimNameRequest.SerializeToString,
+            mafia__pb2.SendVictimNameResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

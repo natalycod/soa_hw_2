@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x0bmafia.proto\"A\n\x16\x43onnectToServerMessage\x12\x14\n\x0csession_name\x18\x01 \x01(\t\x12\x11\n\tuser_name\x18\x02 \x01(\t\"F\n\x1b\x44isconnectFromServerMessage\x12\x14\n\x0csession_name\x18\x01 \x01(\t\x12\x11\n\tuser_name\x18\x02 \x01(\t\"<\n\x11GetMessageRequest\x12\x14\n\x0csession_name\x18\x01 \x01(\t\x12\x11\n\tuser_name\x18\x02 \x01(\t\"\xc6\x06\n\x12GetMessageResponse\x12\x37\n\x0cnone_message\x18\x01 \x01(\x0b\x32\x1f.GetMessageResponse.NoneMessageH\x00\x12J\n\x12success_connection\x18\x02 \x01(\x0b\x32,.GetMessageResponse.SuccessConnectionMessageH\x00\x12\x42\n\x0enew_connection\x18\x03 \x01(\x0b\x32(.GetMessageResponse.NewConnectionMessageH\x00\x12J\n\x12removed_connection\x18\x04 \x01(\x0b\x32,.GetMessageResponse.RemovedConnectionMessageH\x00\x12\x37\n\x0c\x63hat_message\x18\x05 \x01(\x0b\x32\x1f.GetMessageResponse.ChatMessageH\x00\x12>\n\x10new_role_message\x18\x06 \x01(\x0b\x32\".GetMessageResponse.NewRoleMessageH\x00\x12@\n\x11new_stage_message\x18\x07 \x01(\x0b\x32#.GetMessageResponse.NewStageMessageH\x00\x1a\r\n\x0bNoneMessage\x1a\x31\n\x18SuccessConnectionMessage\x12\x15\n\rcurrent_users\x18\x01 \x03(\t\x1a\x44\n\x14NewConnectionMessage\x12\x15\n\rnew_user_name\x18\x01 \x01(\t\x12\x15\n\rcurrent_users\x18\x02 \x03(\t\x1aL\n\x18RemovedConnectionMessage\x12\x19\n\x11removed_user_name\x18\x01 \x01(\t\x12\x15\n\rcurrent_users\x18\x02 \x03(\t\x1a.\n\x0b\x43hatMessage\x12\x11\n\tuser_name\x18\x01 \x01(\t\x12\x0c\n\x04text\x18\x02 \x01(\t\x1a#\n\x0eNewRoleMessage\x12\x11\n\trole_name\x18\x01 \x01(\t\x1a%\n\x0fNewStageMessage\x12\x12\n\nstage_name\x18\x01 \x01(\tB\x0e\n\x0cmessage_type\"\xd1\x01\n\x14\x43ommonServerResponse\x12;\n\rempty_message\x18\x01 \x01(\x0b\x32\".CommonServerResponse.EmptyMessageH\x00\x12\x39\n\x0c\x63ommon_error\x18\x02 \x01(\x0b\x32!.CommonServerResponse.CommonErrorH\x00\x1a\x0e\n\x0c\x45mptyMessage\x1a!\n\x0b\x43ommonError\x12\x12\n\nerror_text\x18\x01 \x01(\tB\x0e\n\x0cmessage_type\"\x9f\x02\n\x16SendUserCommandRequest\x12;\n\x0c\x63hat_message\x18\x01 \x01(\x0b\x32#.SendUserCommandRequest.ChatMessageH\x00\x12\x38\n\x07\x65nd_day\x18\x02 \x01(\x0b\x32%.SendUserCommandRequest.EndDayMessageH\x00\x1a\x44\n\x0b\x43hatMessage\x12\x14\n\x0csession_name\x18\x01 \x01(\t\x12\x11\n\tuser_name\x18\x02 \x01(\t\x12\x0c\n\x04text\x18\x03 \x01(\t\x1a\x38\n\rEndDayMessage\x12\x14\n\x0csession_name\x18\x01 \x01(\t\x12\x11\n\tuser_name\x18\x02 \x01(\tB\x0e\n\x0cmessage_type2\x9c\x02\n\x05Mafia\x12\x43\n\x0f\x43onnectToServer\x12\x17.ConnectToServerMessage\x1a\x15.CommonServerResponse\"\x00\x12M\n\x14\x44isconnectFromServer\x12\x1c.DisconnectFromServerMessage\x1a\x15.CommonServerResponse\"\x00\x12:\n\rGetNewMessage\x12\x12.GetMessageRequest\x1a\x13.GetMessageResponse\"\x00\x12\x43\n\x0fSendUserCommand\x12\x17.SendUserCommandRequest\x1a\x15.CommonServerResponse\"\x00\x62\x06proto3'
+  serialized_pb=b'\n\x0bmafia.proto\"A\n\x16\x43onnectToServerMessage\x12\x14\n\x0csession_name\x18\x01 \x01(\t\x12\x11\n\tuser_name\x18\x02 \x01(\t\"<\n\x11GetMessageRequest\x12\x14\n\x0csession_name\x18\x01 \x01(\t\x12\x11\n\tuser_name\x18\x02 \x01(\t\".\n\x16GetAlivePlayersRequest\x12\x14\n\x0csession_name\x18\x01 \x01(\t\"*\n\x17GetAlivePlayersResponse\x12\x0f\n\x07players\x18\x01 \x03(\t\"U\n\x15SendVictimNameRequest\x12\x14\n\x0csession_name\x18\x01 \x01(\t\x12\x11\n\tuser_name\x18\x02 \x01(\t\x12\x13\n\x0bvictim_name\x18\x03 \x01(\t\"\xf4\x02\n\x16SendVictimNameResponse\x12\x45\n\ralready_chose\x18\x01 \x01(\x0b\x32,.SendVictimNameResponse.AlreadyChoseResponseH\x00\x12?\n\x0emafia_response\x18\x02 \x01(\x0b\x32%.SendVictimNameResponse.MafiaResponseH\x00\x12\x45\n\x11\x63omissar_response\x18\x03 \x01(\x0b\x32(.SendVictimNameResponse.ComissarResponseH\x00\x1a\x16\n\x14\x41lreadyChoseResponse\x1a&\n\rMafiaResponse\x12\x15\n\rchosen_victim\x18\x01 \x01(\t\x1a;\n\x10\x43omissarResponse\x12\x15\n\rchosen_victim\x18\x01 \x01(\t\x12\x10\n\x08is_mafia\x18\x02 \x01(\x08\x42\x0e\n\x0cmessage_type\"\xd9\x02\n\x12GetMessageResponse\x12\x37\n\x0cnone_message\x18\x01 \x01(\x0b\x32\x1f.GetMessageResponse.NoneMessageH\x00\x12;\n\x0eserver_message\x18\x02 \x01(\x0b\x32!.GetMessageResponse.ServerMessageH\x00\x12\x37\n\x0cuser_message\x18\x03 \x01(\x0b\x32\x1f.GetMessageResponse.UserMessageH\x00\x1a\r\n\x0bNoneMessage\x1a\x31\n\rServerMessage\x12\x0c\n\x04text\x18\x01 \x01(\t\x12\x12\n\nmajor_type\x18\x02 \x01(\x08\x1a\x42\n\x0bUserMessage\x12\x11\n\tuser_name\x18\x01 \x01(\t\x12\x0c\n\x04text\x18\x02 \x01(\t\x12\x12\n\nmajor_type\x18\x03 \x01(\x08\x42\x0e\n\x0cmessage_type\"\xd1\x01\n\x14\x43ommonServerResponse\x12;\n\rempty_message\x18\x01 \x01(\x0b\x32\".CommonServerResponse.EmptyMessageH\x00\x12\x39\n\x0c\x63ommon_error\x18\x02 \x01(\x0b\x32!.CommonServerResponse.CommonErrorH\x00\x1a\x0e\n\x0c\x45mptyMessage\x1a!\n\x0b\x43ommonError\x12\x12\n\nerror_text\x18\x01 \x01(\tB\x0e\n\x0cmessage_type\"\x9f\x02\n\x16SendUserCommandRequest\x12;\n\x0c\x63hat_message\x18\x01 \x01(\x0b\x32#.SendUserCommandRequest.ChatMessageH\x00\x12\x38\n\x07\x65nd_day\x18\x02 \x01(\x0b\x32%.SendUserCommandRequest.EndDayMessageH\x00\x1a\x44\n\x0b\x43hatMessage\x12\x14\n\x0csession_name\x18\x01 \x01(\t\x12\x11\n\tuser_name\x18\x02 \x01(\t\x12\x0c\n\x04text\x18\x03 \x01(\t\x1a\x38\n\rEndDayMessage\x12\x14\n\x0csession_name\x18\x01 \x01(\t\x12\x11\n\tuser_name\x18\x02 \x01(\tB\x0e\n\x0cmessage_type2\xda\x02\n\x05Mafia\x12\x43\n\x0f\x43onnectToServer\x12\x17.ConnectToServerMessage\x1a\x15.CommonServerResponse\"\x00\x12:\n\rGetNewMessage\x12\x12.GetMessageRequest\x1a\x13.GetMessageResponse\"\x00\x12\x43\n\x0fSendUserCommand\x12\x17.SendUserCommandRequest\x1a\x15.CommonServerResponse\"\x00\x12\x46\n\x0fGetAlivePlayers\x12\x17.GetAlivePlayersRequest\x1a\x18.GetAlivePlayersResponse\"\x00\x12\x43\n\x0eSendVictimName\x12\x16.SendVictimNameRequest\x1a\x17.SendVictimNameResponse\"\x00\x62\x06proto3'
 )
 
 
@@ -64,45 +64,6 @@ _CONNECTTOSERVERMESSAGE = _descriptor.Descriptor(
 )
 
 
-_DISCONNECTFROMSERVERMESSAGE = _descriptor.Descriptor(
-  name='DisconnectFromServerMessage',
-  full_name='DisconnectFromServerMessage',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='session_name', full_name='DisconnectFromServerMessage.session_name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='user_name', full_name='DisconnectFromServerMessage.user_name', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=82,
-  serialized_end=152,
-)
-
-
 _GETMESSAGEREQUEST = _descriptor.Descriptor(
   name='GetMessageRequest',
   full_name='GetMessageRequest',
@@ -137,8 +98,262 @@ _GETMESSAGEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=154,
-  serialized_end=214,
+  serialized_start=82,
+  serialized_end=142,
+)
+
+
+_GETALIVEPLAYERSREQUEST = _descriptor.Descriptor(
+  name='GetAlivePlayersRequest',
+  full_name='GetAlivePlayersRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='session_name', full_name='GetAlivePlayersRequest.session_name', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=144,
+  serialized_end=190,
+)
+
+
+_GETALIVEPLAYERSRESPONSE = _descriptor.Descriptor(
+  name='GetAlivePlayersResponse',
+  full_name='GetAlivePlayersResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='players', full_name='GetAlivePlayersResponse.players', index=0,
+      number=1, type=9, cpp_type=9, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=192,
+  serialized_end=234,
+)
+
+
+_SENDVICTIMNAMEREQUEST = _descriptor.Descriptor(
+  name='SendVictimNameRequest',
+  full_name='SendVictimNameRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='session_name', full_name='SendVictimNameRequest.session_name', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='user_name', full_name='SendVictimNameRequest.user_name', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='victim_name', full_name='SendVictimNameRequest.victim_name', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=236,
+  serialized_end=321,
+)
+
+
+_SENDVICTIMNAMERESPONSE_ALREADYCHOSERESPONSE = _descriptor.Descriptor(
+  name='AlreadyChoseResponse',
+  full_name='SendVictimNameResponse.AlreadyChoseResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=557,
+  serialized_end=579,
+)
+
+_SENDVICTIMNAMERESPONSE_MAFIARESPONSE = _descriptor.Descriptor(
+  name='MafiaResponse',
+  full_name='SendVictimNameResponse.MafiaResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='chosen_victim', full_name='SendVictimNameResponse.MafiaResponse.chosen_victim', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=581,
+  serialized_end=619,
+)
+
+_SENDVICTIMNAMERESPONSE_COMISSARRESPONSE = _descriptor.Descriptor(
+  name='ComissarResponse',
+  full_name='SendVictimNameResponse.ComissarResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='chosen_victim', full_name='SendVictimNameResponse.ComissarResponse.chosen_victim', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='is_mafia', full_name='SendVictimNameResponse.ComissarResponse.is_mafia', index=1,
+      number=2, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=621,
+  serialized_end=680,
+)
+
+_SENDVICTIMNAMERESPONSE = _descriptor.Descriptor(
+  name='SendVictimNameResponse',
+  full_name='SendVictimNameResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='already_chose', full_name='SendVictimNameResponse.already_chose', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='mafia_response', full_name='SendVictimNameResponse.mafia_response', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='comissar_response', full_name='SendVictimNameResponse.comissar_response', index=2,
+      number=3, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[_SENDVICTIMNAMERESPONSE_ALREADYCHOSERESPONSE, _SENDVICTIMNAMERESPONSE_MAFIARESPONSE, _SENDVICTIMNAMERESPONSE_COMISSARRESPONSE, ],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+    _descriptor.OneofDescriptor(
+      name='message_type', full_name='SendVictimNameResponse.message_type',
+      index=0, containing_type=None,
+      create_key=_descriptor._internal_create_key,
+    fields=[]),
+  ],
+  serialized_start=324,
+  serialized_end=696,
 )
 
 
@@ -162,22 +377,29 @@ _GETMESSAGERESPONSE_NONEMESSAGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=703,
-  serialized_end=716,
+  serialized_start=896,
+  serialized_end=909,
 )
 
-_GETMESSAGERESPONSE_SUCCESSCONNECTIONMESSAGE = _descriptor.Descriptor(
-  name='SuccessConnectionMessage',
-  full_name='GetMessageResponse.SuccessConnectionMessage',
+_GETMESSAGERESPONSE_SERVERMESSAGE = _descriptor.Descriptor(
+  name='ServerMessage',
+  full_name='GetMessageResponse.ServerMessage',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='current_users', full_name='GetMessageResponse.SuccessConnectionMessage.current_users', index=0,
-      number=1, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
+      name='text', full_name='GetMessageResponse.ServerMessage.text', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='major_type', full_name='GetMessageResponse.ServerMessage.major_type', index=1,
+      number=2, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
@@ -193,136 +415,36 @@ _GETMESSAGERESPONSE_SUCCESSCONNECTIONMESSAGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=718,
-  serialized_end=767,
+  serialized_start=911,
+  serialized_end=960,
 )
 
-_GETMESSAGERESPONSE_NEWCONNECTIONMESSAGE = _descriptor.Descriptor(
-  name='NewConnectionMessage',
-  full_name='GetMessageResponse.NewConnectionMessage',
+_GETMESSAGERESPONSE_USERMESSAGE = _descriptor.Descriptor(
+  name='UserMessage',
+  full_name='GetMessageResponse.UserMessage',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='new_user_name', full_name='GetMessageResponse.NewConnectionMessage.new_user_name', index=0,
+      name='user_name', full_name='GetMessageResponse.UserMessage.user_name', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='current_users', full_name='GetMessageResponse.NewConnectionMessage.current_users', index=1,
-      number=2, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=769,
-  serialized_end=837,
-)
-
-_GETMESSAGERESPONSE_REMOVEDCONNECTIONMESSAGE = _descriptor.Descriptor(
-  name='RemovedConnectionMessage',
-  full_name='GetMessageResponse.RemovedConnectionMessage',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='removed_user_name', full_name='GetMessageResponse.RemovedConnectionMessage.removed_user_name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='current_users', full_name='GetMessageResponse.RemovedConnectionMessage.current_users', index=1,
-      number=2, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=839,
-  serialized_end=915,
-)
-
-_GETMESSAGERESPONSE_CHATMESSAGE = _descriptor.Descriptor(
-  name='ChatMessage',
-  full_name='GetMessageResponse.ChatMessage',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='user_name', full_name='GetMessageResponse.ChatMessage.user_name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='text', full_name='GetMessageResponse.ChatMessage.text', index=1,
+      name='text', full_name='GetMessageResponse.UserMessage.text', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=917,
-  serialized_end=963,
-)
-
-_GETMESSAGERESPONSE_NEWROLEMESSAGE = _descriptor.Descriptor(
-  name='NewRoleMessage',
-  full_name='GetMessageResponse.NewRoleMessage',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
     _descriptor.FieldDescriptor(
-      name='role_name', full_name='GetMessageResponse.NewRoleMessage.role_name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
+      name='major_type', full_name='GetMessageResponse.UserMessage.major_type', index=2,
+      number=3, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
@@ -338,39 +460,8 @@ _GETMESSAGERESPONSE_NEWROLEMESSAGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=965,
-  serialized_end=1000,
-)
-
-_GETMESSAGERESPONSE_NEWSTAGEMESSAGE = _descriptor.Descriptor(
-  name='NewStageMessage',
-  full_name='GetMessageResponse.NewStageMessage',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='stage_name', full_name='GetMessageResponse.NewStageMessage.stage_name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1002,
-  serialized_end=1039,
+  serialized_start=962,
+  serialized_end=1028,
 )
 
 _GETMESSAGERESPONSE = _descriptor.Descriptor(
@@ -389,43 +480,15 @@ _GETMESSAGERESPONSE = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='success_connection', full_name='GetMessageResponse.success_connection', index=1,
+      name='server_message', full_name='GetMessageResponse.server_message', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='new_connection', full_name='GetMessageResponse.new_connection', index=2,
+      name='user_message', full_name='GetMessageResponse.user_message', index=2,
       number=3, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='removed_connection', full_name='GetMessageResponse.removed_connection', index=3,
-      number=4, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='chat_message', full_name='GetMessageResponse.chat_message', index=4,
-      number=5, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='new_role_message', full_name='GetMessageResponse.new_role_message', index=5,
-      number=6, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='new_stage_message', full_name='GetMessageResponse.new_stage_message', index=6,
-      number=7, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -433,7 +496,7 @@ _GETMESSAGERESPONSE = _descriptor.Descriptor(
   ],
   extensions=[
   ],
-  nested_types=[_GETMESSAGERESPONSE_NONEMESSAGE, _GETMESSAGERESPONSE_SUCCESSCONNECTIONMESSAGE, _GETMESSAGERESPONSE_NEWCONNECTIONMESSAGE, _GETMESSAGERESPONSE_REMOVEDCONNECTIONMESSAGE, _GETMESSAGERESPONSE_CHATMESSAGE, _GETMESSAGERESPONSE_NEWROLEMESSAGE, _GETMESSAGERESPONSE_NEWSTAGEMESSAGE, ],
+  nested_types=[_GETMESSAGERESPONSE_NONEMESSAGE, _GETMESSAGERESPONSE_SERVERMESSAGE, _GETMESSAGERESPONSE_USERMESSAGE, ],
   enum_types=[
   ],
   serialized_options=None,
@@ -447,8 +510,8 @@ _GETMESSAGERESPONSE = _descriptor.Descriptor(
       create_key=_descriptor._internal_create_key,
     fields=[]),
   ],
-  serialized_start=217,
-  serialized_end=1055,
+  serialized_start=699,
+  serialized_end=1044,
 )
 
 
@@ -472,8 +535,8 @@ _COMMONSERVERRESPONSE_EMPTYMESSAGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1202,
-  serialized_end=1216,
+  serialized_start=1191,
+  serialized_end=1205,
 )
 
 _COMMONSERVERRESPONSE_COMMONERROR = _descriptor.Descriptor(
@@ -503,8 +566,8 @@ _COMMONSERVERRESPONSE_COMMONERROR = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1218,
-  serialized_end=1251,
+  serialized_start=1207,
+  serialized_end=1240,
 )
 
 _COMMONSERVERRESPONSE = _descriptor.Descriptor(
@@ -546,8 +609,8 @@ _COMMONSERVERRESPONSE = _descriptor.Descriptor(
       create_key=_descriptor._internal_create_key,
     fields=[]),
   ],
-  serialized_start=1058,
-  serialized_end=1267,
+  serialized_start=1047,
+  serialized_end=1256,
 )
 
 
@@ -592,8 +655,8 @@ _SENDUSERCOMMANDREQUEST_CHATMESSAGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1415,
-  serialized_end=1483,
+  serialized_start=1404,
+  serialized_end=1472,
 )
 
 _SENDUSERCOMMANDREQUEST_ENDDAYMESSAGE = _descriptor.Descriptor(
@@ -630,8 +693,8 @@ _SENDUSERCOMMANDREQUEST_ENDDAYMESSAGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1485,
-  serialized_end=1541,
+  serialized_start=1474,
+  serialized_end=1530,
 )
 
 _SENDUSERCOMMANDREQUEST = _descriptor.Descriptor(
@@ -673,45 +736,40 @@ _SENDUSERCOMMANDREQUEST = _descriptor.Descriptor(
       create_key=_descriptor._internal_create_key,
     fields=[]),
   ],
-  serialized_start=1270,
-  serialized_end=1557,
+  serialized_start=1259,
+  serialized_end=1546,
 )
 
+_SENDVICTIMNAMERESPONSE_ALREADYCHOSERESPONSE.containing_type = _SENDVICTIMNAMERESPONSE
+_SENDVICTIMNAMERESPONSE_MAFIARESPONSE.containing_type = _SENDVICTIMNAMERESPONSE
+_SENDVICTIMNAMERESPONSE_COMISSARRESPONSE.containing_type = _SENDVICTIMNAMERESPONSE
+_SENDVICTIMNAMERESPONSE.fields_by_name['already_chose'].message_type = _SENDVICTIMNAMERESPONSE_ALREADYCHOSERESPONSE
+_SENDVICTIMNAMERESPONSE.fields_by_name['mafia_response'].message_type = _SENDVICTIMNAMERESPONSE_MAFIARESPONSE
+_SENDVICTIMNAMERESPONSE.fields_by_name['comissar_response'].message_type = _SENDVICTIMNAMERESPONSE_COMISSARRESPONSE
+_SENDVICTIMNAMERESPONSE.oneofs_by_name['message_type'].fields.append(
+  _SENDVICTIMNAMERESPONSE.fields_by_name['already_chose'])
+_SENDVICTIMNAMERESPONSE.fields_by_name['already_chose'].containing_oneof = _SENDVICTIMNAMERESPONSE.oneofs_by_name['message_type']
+_SENDVICTIMNAMERESPONSE.oneofs_by_name['message_type'].fields.append(
+  _SENDVICTIMNAMERESPONSE.fields_by_name['mafia_response'])
+_SENDVICTIMNAMERESPONSE.fields_by_name['mafia_response'].containing_oneof = _SENDVICTIMNAMERESPONSE.oneofs_by_name['message_type']
+_SENDVICTIMNAMERESPONSE.oneofs_by_name['message_type'].fields.append(
+  _SENDVICTIMNAMERESPONSE.fields_by_name['comissar_response'])
+_SENDVICTIMNAMERESPONSE.fields_by_name['comissar_response'].containing_oneof = _SENDVICTIMNAMERESPONSE.oneofs_by_name['message_type']
 _GETMESSAGERESPONSE_NONEMESSAGE.containing_type = _GETMESSAGERESPONSE
-_GETMESSAGERESPONSE_SUCCESSCONNECTIONMESSAGE.containing_type = _GETMESSAGERESPONSE
-_GETMESSAGERESPONSE_NEWCONNECTIONMESSAGE.containing_type = _GETMESSAGERESPONSE
-_GETMESSAGERESPONSE_REMOVEDCONNECTIONMESSAGE.containing_type = _GETMESSAGERESPONSE
-_GETMESSAGERESPONSE_CHATMESSAGE.containing_type = _GETMESSAGERESPONSE
-_GETMESSAGERESPONSE_NEWROLEMESSAGE.containing_type = _GETMESSAGERESPONSE
-_GETMESSAGERESPONSE_NEWSTAGEMESSAGE.containing_type = _GETMESSAGERESPONSE
+_GETMESSAGERESPONSE_SERVERMESSAGE.containing_type = _GETMESSAGERESPONSE
+_GETMESSAGERESPONSE_USERMESSAGE.containing_type = _GETMESSAGERESPONSE
 _GETMESSAGERESPONSE.fields_by_name['none_message'].message_type = _GETMESSAGERESPONSE_NONEMESSAGE
-_GETMESSAGERESPONSE.fields_by_name['success_connection'].message_type = _GETMESSAGERESPONSE_SUCCESSCONNECTIONMESSAGE
-_GETMESSAGERESPONSE.fields_by_name['new_connection'].message_type = _GETMESSAGERESPONSE_NEWCONNECTIONMESSAGE
-_GETMESSAGERESPONSE.fields_by_name['removed_connection'].message_type = _GETMESSAGERESPONSE_REMOVEDCONNECTIONMESSAGE
-_GETMESSAGERESPONSE.fields_by_name['chat_message'].message_type = _GETMESSAGERESPONSE_CHATMESSAGE
-_GETMESSAGERESPONSE.fields_by_name['new_role_message'].message_type = _GETMESSAGERESPONSE_NEWROLEMESSAGE
-_GETMESSAGERESPONSE.fields_by_name['new_stage_message'].message_type = _GETMESSAGERESPONSE_NEWSTAGEMESSAGE
+_GETMESSAGERESPONSE.fields_by_name['server_message'].message_type = _GETMESSAGERESPONSE_SERVERMESSAGE
+_GETMESSAGERESPONSE.fields_by_name['user_message'].message_type = _GETMESSAGERESPONSE_USERMESSAGE
 _GETMESSAGERESPONSE.oneofs_by_name['message_type'].fields.append(
   _GETMESSAGERESPONSE.fields_by_name['none_message'])
 _GETMESSAGERESPONSE.fields_by_name['none_message'].containing_oneof = _GETMESSAGERESPONSE.oneofs_by_name['message_type']
 _GETMESSAGERESPONSE.oneofs_by_name['message_type'].fields.append(
-  _GETMESSAGERESPONSE.fields_by_name['success_connection'])
-_GETMESSAGERESPONSE.fields_by_name['success_connection'].containing_oneof = _GETMESSAGERESPONSE.oneofs_by_name['message_type']
+  _GETMESSAGERESPONSE.fields_by_name['server_message'])
+_GETMESSAGERESPONSE.fields_by_name['server_message'].containing_oneof = _GETMESSAGERESPONSE.oneofs_by_name['message_type']
 _GETMESSAGERESPONSE.oneofs_by_name['message_type'].fields.append(
-  _GETMESSAGERESPONSE.fields_by_name['new_connection'])
-_GETMESSAGERESPONSE.fields_by_name['new_connection'].containing_oneof = _GETMESSAGERESPONSE.oneofs_by_name['message_type']
-_GETMESSAGERESPONSE.oneofs_by_name['message_type'].fields.append(
-  _GETMESSAGERESPONSE.fields_by_name['removed_connection'])
-_GETMESSAGERESPONSE.fields_by_name['removed_connection'].containing_oneof = _GETMESSAGERESPONSE.oneofs_by_name['message_type']
-_GETMESSAGERESPONSE.oneofs_by_name['message_type'].fields.append(
-  _GETMESSAGERESPONSE.fields_by_name['chat_message'])
-_GETMESSAGERESPONSE.fields_by_name['chat_message'].containing_oneof = _GETMESSAGERESPONSE.oneofs_by_name['message_type']
-_GETMESSAGERESPONSE.oneofs_by_name['message_type'].fields.append(
-  _GETMESSAGERESPONSE.fields_by_name['new_role_message'])
-_GETMESSAGERESPONSE.fields_by_name['new_role_message'].containing_oneof = _GETMESSAGERESPONSE.oneofs_by_name['message_type']
-_GETMESSAGERESPONSE.oneofs_by_name['message_type'].fields.append(
-  _GETMESSAGERESPONSE.fields_by_name['new_stage_message'])
-_GETMESSAGERESPONSE.fields_by_name['new_stage_message'].containing_oneof = _GETMESSAGERESPONSE.oneofs_by_name['message_type']
+  _GETMESSAGERESPONSE.fields_by_name['user_message'])
+_GETMESSAGERESPONSE.fields_by_name['user_message'].containing_oneof = _GETMESSAGERESPONSE.oneofs_by_name['message_type']
 _COMMONSERVERRESPONSE_EMPTYMESSAGE.containing_type = _COMMONSERVERRESPONSE
 _COMMONSERVERRESPONSE_COMMONERROR.containing_type = _COMMONSERVERRESPONSE
 _COMMONSERVERRESPONSE.fields_by_name['empty_message'].message_type = _COMMONSERVERRESPONSE_EMPTYMESSAGE
@@ -733,8 +791,11 @@ _SENDUSERCOMMANDREQUEST.oneofs_by_name['message_type'].fields.append(
   _SENDUSERCOMMANDREQUEST.fields_by_name['end_day'])
 _SENDUSERCOMMANDREQUEST.fields_by_name['end_day'].containing_oneof = _SENDUSERCOMMANDREQUEST.oneofs_by_name['message_type']
 DESCRIPTOR.message_types_by_name['ConnectToServerMessage'] = _CONNECTTOSERVERMESSAGE
-DESCRIPTOR.message_types_by_name['DisconnectFromServerMessage'] = _DISCONNECTFROMSERVERMESSAGE
 DESCRIPTOR.message_types_by_name['GetMessageRequest'] = _GETMESSAGEREQUEST
+DESCRIPTOR.message_types_by_name['GetAlivePlayersRequest'] = _GETALIVEPLAYERSREQUEST
+DESCRIPTOR.message_types_by_name['GetAlivePlayersResponse'] = _GETALIVEPLAYERSRESPONSE
+DESCRIPTOR.message_types_by_name['SendVictimNameRequest'] = _SENDVICTIMNAMEREQUEST
+DESCRIPTOR.message_types_by_name['SendVictimNameResponse'] = _SENDVICTIMNAMERESPONSE
 DESCRIPTOR.message_types_by_name['GetMessageResponse'] = _GETMESSAGERESPONSE
 DESCRIPTOR.message_types_by_name['CommonServerResponse'] = _COMMONSERVERRESPONSE
 DESCRIPTOR.message_types_by_name['SendUserCommandRequest'] = _SENDUSERCOMMANDREQUEST
@@ -747,19 +808,64 @@ ConnectToServerMessage = _reflection.GeneratedProtocolMessageType('ConnectToServ
   })
 _sym_db.RegisterMessage(ConnectToServerMessage)
 
-DisconnectFromServerMessage = _reflection.GeneratedProtocolMessageType('DisconnectFromServerMessage', (_message.Message,), {
-  'DESCRIPTOR' : _DISCONNECTFROMSERVERMESSAGE,
-  '__module__' : 'mafia_pb2'
-  # @@protoc_insertion_point(class_scope:DisconnectFromServerMessage)
-  })
-_sym_db.RegisterMessage(DisconnectFromServerMessage)
-
 GetMessageRequest = _reflection.GeneratedProtocolMessageType('GetMessageRequest', (_message.Message,), {
   'DESCRIPTOR' : _GETMESSAGEREQUEST,
   '__module__' : 'mafia_pb2'
   # @@protoc_insertion_point(class_scope:GetMessageRequest)
   })
 _sym_db.RegisterMessage(GetMessageRequest)
+
+GetAlivePlayersRequest = _reflection.GeneratedProtocolMessageType('GetAlivePlayersRequest', (_message.Message,), {
+  'DESCRIPTOR' : _GETALIVEPLAYERSREQUEST,
+  '__module__' : 'mafia_pb2'
+  # @@protoc_insertion_point(class_scope:GetAlivePlayersRequest)
+  })
+_sym_db.RegisterMessage(GetAlivePlayersRequest)
+
+GetAlivePlayersResponse = _reflection.GeneratedProtocolMessageType('GetAlivePlayersResponse', (_message.Message,), {
+  'DESCRIPTOR' : _GETALIVEPLAYERSRESPONSE,
+  '__module__' : 'mafia_pb2'
+  # @@protoc_insertion_point(class_scope:GetAlivePlayersResponse)
+  })
+_sym_db.RegisterMessage(GetAlivePlayersResponse)
+
+SendVictimNameRequest = _reflection.GeneratedProtocolMessageType('SendVictimNameRequest', (_message.Message,), {
+  'DESCRIPTOR' : _SENDVICTIMNAMEREQUEST,
+  '__module__' : 'mafia_pb2'
+  # @@protoc_insertion_point(class_scope:SendVictimNameRequest)
+  })
+_sym_db.RegisterMessage(SendVictimNameRequest)
+
+SendVictimNameResponse = _reflection.GeneratedProtocolMessageType('SendVictimNameResponse', (_message.Message,), {
+
+  'AlreadyChoseResponse' : _reflection.GeneratedProtocolMessageType('AlreadyChoseResponse', (_message.Message,), {
+    'DESCRIPTOR' : _SENDVICTIMNAMERESPONSE_ALREADYCHOSERESPONSE,
+    '__module__' : 'mafia_pb2'
+    # @@protoc_insertion_point(class_scope:SendVictimNameResponse.AlreadyChoseResponse)
+    })
+  ,
+
+  'MafiaResponse' : _reflection.GeneratedProtocolMessageType('MafiaResponse', (_message.Message,), {
+    'DESCRIPTOR' : _SENDVICTIMNAMERESPONSE_MAFIARESPONSE,
+    '__module__' : 'mafia_pb2'
+    # @@protoc_insertion_point(class_scope:SendVictimNameResponse.MafiaResponse)
+    })
+  ,
+
+  'ComissarResponse' : _reflection.GeneratedProtocolMessageType('ComissarResponse', (_message.Message,), {
+    'DESCRIPTOR' : _SENDVICTIMNAMERESPONSE_COMISSARRESPONSE,
+    '__module__' : 'mafia_pb2'
+    # @@protoc_insertion_point(class_scope:SendVictimNameResponse.ComissarResponse)
+    })
+  ,
+  'DESCRIPTOR' : _SENDVICTIMNAMERESPONSE,
+  '__module__' : 'mafia_pb2'
+  # @@protoc_insertion_point(class_scope:SendVictimNameResponse)
+  })
+_sym_db.RegisterMessage(SendVictimNameResponse)
+_sym_db.RegisterMessage(SendVictimNameResponse.AlreadyChoseResponse)
+_sym_db.RegisterMessage(SendVictimNameResponse.MafiaResponse)
+_sym_db.RegisterMessage(SendVictimNameResponse.ComissarResponse)
 
 GetMessageResponse = _reflection.GeneratedProtocolMessageType('GetMessageResponse', (_message.Message,), {
 
@@ -770,45 +876,17 @@ GetMessageResponse = _reflection.GeneratedProtocolMessageType('GetMessageRespons
     })
   ,
 
-  'SuccessConnectionMessage' : _reflection.GeneratedProtocolMessageType('SuccessConnectionMessage', (_message.Message,), {
-    'DESCRIPTOR' : _GETMESSAGERESPONSE_SUCCESSCONNECTIONMESSAGE,
+  'ServerMessage' : _reflection.GeneratedProtocolMessageType('ServerMessage', (_message.Message,), {
+    'DESCRIPTOR' : _GETMESSAGERESPONSE_SERVERMESSAGE,
     '__module__' : 'mafia_pb2'
-    # @@protoc_insertion_point(class_scope:GetMessageResponse.SuccessConnectionMessage)
+    # @@protoc_insertion_point(class_scope:GetMessageResponse.ServerMessage)
     })
   ,
 
-  'NewConnectionMessage' : _reflection.GeneratedProtocolMessageType('NewConnectionMessage', (_message.Message,), {
-    'DESCRIPTOR' : _GETMESSAGERESPONSE_NEWCONNECTIONMESSAGE,
+  'UserMessage' : _reflection.GeneratedProtocolMessageType('UserMessage', (_message.Message,), {
+    'DESCRIPTOR' : _GETMESSAGERESPONSE_USERMESSAGE,
     '__module__' : 'mafia_pb2'
-    # @@protoc_insertion_point(class_scope:GetMessageResponse.NewConnectionMessage)
-    })
-  ,
-
-  'RemovedConnectionMessage' : _reflection.GeneratedProtocolMessageType('RemovedConnectionMessage', (_message.Message,), {
-    'DESCRIPTOR' : _GETMESSAGERESPONSE_REMOVEDCONNECTIONMESSAGE,
-    '__module__' : 'mafia_pb2'
-    # @@protoc_insertion_point(class_scope:GetMessageResponse.RemovedConnectionMessage)
-    })
-  ,
-
-  'ChatMessage' : _reflection.GeneratedProtocolMessageType('ChatMessage', (_message.Message,), {
-    'DESCRIPTOR' : _GETMESSAGERESPONSE_CHATMESSAGE,
-    '__module__' : 'mafia_pb2'
-    # @@protoc_insertion_point(class_scope:GetMessageResponse.ChatMessage)
-    })
-  ,
-
-  'NewRoleMessage' : _reflection.GeneratedProtocolMessageType('NewRoleMessage', (_message.Message,), {
-    'DESCRIPTOR' : _GETMESSAGERESPONSE_NEWROLEMESSAGE,
-    '__module__' : 'mafia_pb2'
-    # @@protoc_insertion_point(class_scope:GetMessageResponse.NewRoleMessage)
-    })
-  ,
-
-  'NewStageMessage' : _reflection.GeneratedProtocolMessageType('NewStageMessage', (_message.Message,), {
-    'DESCRIPTOR' : _GETMESSAGERESPONSE_NEWSTAGEMESSAGE,
-    '__module__' : 'mafia_pb2'
-    # @@protoc_insertion_point(class_scope:GetMessageResponse.NewStageMessage)
+    # @@protoc_insertion_point(class_scope:GetMessageResponse.UserMessage)
     })
   ,
   'DESCRIPTOR' : _GETMESSAGERESPONSE,
@@ -817,12 +895,8 @@ GetMessageResponse = _reflection.GeneratedProtocolMessageType('GetMessageRespons
   })
 _sym_db.RegisterMessage(GetMessageResponse)
 _sym_db.RegisterMessage(GetMessageResponse.NoneMessage)
-_sym_db.RegisterMessage(GetMessageResponse.SuccessConnectionMessage)
-_sym_db.RegisterMessage(GetMessageResponse.NewConnectionMessage)
-_sym_db.RegisterMessage(GetMessageResponse.RemovedConnectionMessage)
-_sym_db.RegisterMessage(GetMessageResponse.ChatMessage)
-_sym_db.RegisterMessage(GetMessageResponse.NewRoleMessage)
-_sym_db.RegisterMessage(GetMessageResponse.NewStageMessage)
+_sym_db.RegisterMessage(GetMessageResponse.ServerMessage)
+_sym_db.RegisterMessage(GetMessageResponse.UserMessage)
 
 CommonServerResponse = _reflection.GeneratedProtocolMessageType('CommonServerResponse', (_message.Message,), {
 
@@ -879,8 +953,8 @@ _MAFIA = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=1560,
-  serialized_end=1844,
+  serialized_start=1549,
+  serialized_end=1895,
   methods=[
   _descriptor.MethodDescriptor(
     name='ConnectToServer',
@@ -893,19 +967,9 @@ _MAFIA = _descriptor.ServiceDescriptor(
     create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
-    name='DisconnectFromServer',
-    full_name='Mafia.DisconnectFromServer',
-    index=1,
-    containing_service=None,
-    input_type=_DISCONNECTFROMSERVERMESSAGE,
-    output_type=_COMMONSERVERRESPONSE,
-    serialized_options=None,
-    create_key=_descriptor._internal_create_key,
-  ),
-  _descriptor.MethodDescriptor(
     name='GetNewMessage',
     full_name='Mafia.GetNewMessage',
-    index=2,
+    index=1,
     containing_service=None,
     input_type=_GETMESSAGEREQUEST,
     output_type=_GETMESSAGERESPONSE,
@@ -915,10 +979,30 @@ _MAFIA = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='SendUserCommand',
     full_name='Mafia.SendUserCommand',
-    index=3,
+    index=2,
     containing_service=None,
     input_type=_SENDUSERCOMMANDREQUEST,
     output_type=_COMMONSERVERRESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetAlivePlayers',
+    full_name='Mafia.GetAlivePlayers',
+    index=3,
+    containing_service=None,
+    input_type=_GETALIVEPLAYERSREQUEST,
+    output_type=_GETALIVEPLAYERSRESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='SendVictimName',
+    full_name='Mafia.SendVictimName',
+    index=4,
+    containing_service=None,
+    input_type=_SENDVICTIMNAMEREQUEST,
+    output_type=_SENDVICTIMNAMERESPONSE,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
   ),

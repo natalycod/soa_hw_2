@@ -2,17 +2,13 @@ syntax = "proto3";
 
 service Mafia {
     rpc ConnectToServer(ConnectToServerMessage) returns (CommonServerResponse) {}
-    rpc DisconnectFromServer(DisconnectFromServerMessage) returns (CommonServerResponse) {}
     rpc GetNewMessage(GetMessageRequest) returns (GetMessageResponse) {}
     rpc SendUserCommand(SendUserCommandRequest) returns (CommonServerResponse) {}
+    rpc GetAlivePlayers(GetAlivePlayersRequest) returns (GetAlivePlayersResponse) {}
+    rpc SendVictimName(SendVictimNameRequest) returns (SendVictimNameResponse) {}
 }
 
 message ConnectToServerMessage {
-    string session_name = 1;
-    string user_name = 2;
-}
-
-message DisconnectFromServerMessage {
     string session_name = 1;
     string user_name = 2;
 }
@@ -22,44 +18,57 @@ message GetMessageRequest {
     string user_name = 2;
 }
 
+message GetAlivePlayersRequest {
+    string session_name = 1;
+}
+
+message GetAlivePlayersResponse {
+    repeated string players = 1;
+}
+
+message SendVictimNameRequest {
+    string session_name = 1;
+    string user_name = 2;
+    string victim_name = 3;
+}
+
+message SendVictimNameResponse {
+    oneof message_type {
+        AlreadyChoseResponse already_chose = 1;
+        MafiaResponse mafia_response = 2;
+        ComissarResponse comissar_response = 3;
+    }
+
+    message AlreadyChoseResponse {}
+
+    message MafiaResponse {
+        string chosen_victim = 1;
+    }
+
+    message ComissarResponse {
+        string chosen_victim = 1;
+        bool is_mafia = 2;
+    }
+}
+
 message GetMessageResponse {
     oneof message_type {
         NoneMessage none_message = 1;
-        SuccessConnectionMessage success_connection = 2;
-        NewConnectionMessage new_connection = 3;
-        RemovedConnectionMessage removed_connection = 4;
-        ChatMessage chat_message = 5;
-        NewRoleMessage new_role_message = 6;
-        NewStageMessage new_stage_message = 7;
+        ServerMessage server_message = 2;
+        UserMessage user_message = 3;
     }
 
     message NoneMessage {}
 
-    message SuccessConnectionMessage {
-        repeated string current_users = 1;
+    message ServerMessage {
+        string text = 1;
+        bool major_type = 2;
     }
 
-    message NewConnectionMessage {
-        string new_user_name = 1;
-        repeated string current_users = 2;
-    }
-
-    message RemovedConnectionMessage {
-        string removed_user_name = 1;
-        repeated string current_users = 2;
-    }
-
-    message ChatMessage {
+    message UserMessage {
         string user_name = 1;
         string text = 2;
-    }
-    
-    message NewRoleMessage {
-        string role_name = 1;
-    }
-
-    message NewStageMessage {
-        string stage_name = 1;
+        bool major_type = 3;
     }
 }
 
