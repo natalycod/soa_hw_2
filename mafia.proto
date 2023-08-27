@@ -7,6 +7,8 @@ service Mafia {
     rpc KillUser(KillUserRequest) returns (CommonServerResponse) {}
     rpc SendChatMessage(SendChatMessageRequest) returns (CommonServerResponse) {}
     rpc EndDay(EndDayRequest) returns (CommonServerResponse) {}
+    rpc Publish(PublishRequest) returns (CommonServerResponse) {}
+    rpc Blame(BlameRequest) returns (CommonServerResponse) {}
 }
 
 message ConnectToServerMessage {
@@ -40,6 +42,17 @@ message SendChatMessageRequest {
 message EndDayRequest {
     string session_name = 1;
     string user_name = 2;
+}
+
+message PublishRequest {
+    string session_name = 1;
+    string user_name = 2;
+}
+
+message BlameRequest {
+    string session_name = 1;
+    string user_name = 2;
+    string blame_name = 3;
 }
 
 message GetMessageResponse {

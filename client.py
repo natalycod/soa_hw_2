@@ -75,6 +75,14 @@ class UserSession:
                 response = self._stub.KillUser(mafia_pb2.KillUserRequest(session_name=self.session_name, user_name=self.user_name, kill_name=command[5:]))
                 if response.HasField("common_error"):
                     print(bcolors.FAIL + "error: " + response.common_error.error_text + bcolors.ENDC)
+            if command.startswith("publish"):
+                response = self._stub.Publish(mafia_pb2.PublishRequest(session_name=self.session_name, user_name=self.user_name))
+                if response.HasField("common_error"):
+                    print(bcolors.FAIL + "error: " + response.common_error.error_text + bcolors.ENDC)
+            if command.startswith("blame "):
+                response = self._stub.Blame(mafia_pb2.BlameRequest(session_name=self.session_name, user_name=self.user_name, blame_name=command[6:]))
+                if response.HasField("common_error"):
+                    print(bcolors.FAIL + "error: " + response.common_error.error_text + bcolors.ENDC)
 
 print("Hi! Wanna play some mafia?")
 print("Enter name of session you want to connect to")

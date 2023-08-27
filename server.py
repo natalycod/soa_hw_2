@@ -49,6 +49,7 @@ class GameStage(Enum):
     NOT_STARTED = 'not_started'
     DAY = 'day'
     NIGHT = 'night'
+    ENDED = 'ended'
 
 class User:
     def __init__(self, name):
@@ -57,7 +58,10 @@ class User:
         self.messages = Queue()
         self.ready_to_end_day = False
         self.ready_to_end_night = False
+        self.blamed_anyone = False
+        self.blamed_count = 0
         self.alive = True
+        self.found_mafia = None
     
     def add_message(self, message):
         self.messages.put(message)
@@ -80,18 +84,18 @@ class Session:
         self.users = {}
         self.ready_to_end_day_count = 0
         self.ready_to_end_night_count = 0
+        self.stage_messages = []
 
         threading.Thread(target=self._keep_relevant, daemon=False, args=[]).start()
 
-    def _try_to_start_game(self):
-        if len(self.users) < 2:
-            return False
-        self.game_stage = GameStage.DAY
+    def _clear_stage(self):
         self.ready_to_end_day_count = 0
         self.ready_to_end_night_count = 0
         for name, user in self.users.items():
             user.ready_to_end_day = False
             user.ready_to_end_night = False
+            user.blamed_count = 0
+            user.blamed_anyone = False
             if not user.alive:
                 user.ready_to_end_day = True
                 user.ready_to_end_night = True
@@ -100,6 +104,22 @@ class Session:
             elif user.role == Role.PEACEFUL:
                 user.ready_to_end_night = True
                 self.ready_to_end_night_count += 1
+
+    def _send_stage_messages(self):
+        for name, user in self.users.items():
+            for stage_message in self.stage_messages:
+                user.add_message(stage_message)
+            alive_message = Message()
+            alive_message.make_server_message("Living players: " + ", ".join(self._get_alive_players()), True)
+            user.add_message(alive_message)
+        self.stage_messages = []
+
+    def _try_to_start_game(self):
+        if len(self.users) < 2:
+            return False
+        self.game_stage = GameStage.DAY
+        self._clear_stage()
+        for name, user in self.users.items():
             message = Message()
             message.make_server_message("--- GAME STARTED ---", True)
             user.add_message(message)
@@ -112,72 +132,94 @@ class Session:
             self.users[current_users[i]].set_role(Role.PEACEFUL)
         return True
 
+    def _blame_users(self):
+        alive_players = self._get_alive_players()
+        
+        blamed_user = None
+        cnt_alive = len(alive_players)
+        for name, user in self.users.items():
+            if user.blamed_count * 2 > cnt_alive:
+                blamed_user = name
+                break
+        if blamed_user is None:
+            return
+
+        self.users[blamed_user].alive = False
+        message = Message()
+        message.make_server_message("User " + blamed_user + " was killed by the crowd", True)
+        self.stage_messages.append(message)
+
     def _try_to_end_day(self):
         if self.ready_to_end_day_count < len(self.users):
             return False
+        self._blame_users()
         self.game_stage = GameStage.NIGHT
-        self.ready_to_end_day_count = 0
-        self.ready_to_end_night_count = 0
-        for name, user in self.users.items():
-            user.ready_to_end_day = False
-            user.ready_to_end_night = False
-            if not user.alive:
-                user.ready_to_end_day = True
-                user.ready_to_end_night = True
-                self.ready_to_end_day_count += 1
-                self.ready_to_end_night_count += 1
-            elif user.role == Role.PEACEFUL:
-                user.ready_to_end_night = True
-                self.ready_to_end_night_count += 1
-            message = Message()
-            rules_message = Message()
-            alive_message = Message()
-            alive_players = self.get_alive_players()
+        self._clear_stage()
 
+        for name, user in self.users.items():
+            message = Message()
             message.make_server_message("--- NIGHT TIME ---", True)
             user.add_message(message)
 
-            if user.role == Role.MAFIA:
-                rules_message.make_server_message("You must kill somebody (\"kill\" and name of your victim) or write \"pass\"", False)
-                user.add_message(rules_message)
-                alive_message.make_server_message("Living players: " + ", ".join(alive_players), False)
-                user.add_message(alive_message)
-            if user.role == Role.COMISSAR:
-                rules_message.make_server_message("You must check somebody (\"check\" and name of your victim) or write \"pass\"", False)
-                user.add_message(rules_message)
-                alive_message.make_server_message("Living players: " + ", ".join(alive_players), False)
-                user.add_message(alive_message)
+        self._send_stage_messages()
 
+        for name, user in self.users.items():
+            rules_message = Message()
+            if user.role == Role.MAFIA:
+                rules_message.make_server_message("You must kill somebody (\"kill\" and name of your victim)", False)
+                user.add_message(rules_message)
+            if user.role == Role.COMISSAR:
+                rules_message.make_server_message("You must check somebody (\"check\" and name of your victim)", False)
+                user.add_message(rules_message)
         return True
 
     def _try_to_end_night(self):
         if self.ready_to_end_night_count < len(self.users):
             return False
         self.game_stage = GameStage.DAY
-        self.ready_to_end_day_count = 0
-        self.ready_to_end_night_count = 0
+        self._clear_stage()
         for name, user in self.users.items():
-            user.ready_to_end_day = False
-            user.ready_to_end_night = False
-            if not user.alive:
-                user.ready_to_end_day = True
-                user.ready_to_end_night = True
-                self.ready_to_end_day_count += 1
-                self.ready_to_end_night_count += 1
-            elif user.role == Role.PEACEFUL:
-                user.ready_to_end_night = True
-                self.ready_to_end_night_count += 1
             message = Message()
             message.make_server_message("--- DAY TIME ---", True)
             user.add_message(message)
+        self._send_stage_messages()
         return True
 
     def _try_to_end_game(self):
-        pass
+        if self.game_stage == GameStage.NOT_STARTED:
+            return False
+        mafia_cnt = 0
+        peace_cnt = 0
+        for name, user in self.users.items():
+            if not user.alive:
+                continue
+            if user.role == Role.MAFIA:
+                mafia_cnt += 1
+            else:
+                peace_cnt += 1
+        
+        main_message = Message()
+        main_message.make_server_message("--- END ---", True)
+
+        if mafia_cnt == 0:
+            self.stage_messages.append(main_message)
+            message = Message()
+            message.make_server_message("Peace won!", True)
+            self.stage_messages.append(message)
+        elif mafia_cnt >= peace_cnt:
+            self.stage_messages.append(main_message)
+            message = Message()
+            message.make_server_message("Mafia won!", True)
+            self.stage_messages.append(message)
+        else:
+            return False
+        self._send_stage_messages()
+        return True
 
     def _keep_relevant(self):
         while True:
-            self._try_to_end_game()
+            if self._try_to_end_game():
+                break
             if self.game_stage == GameStage.NOT_STARTED:
                 self._try_to_start_game()
             if self.game_stage == GameStage.DAY:
@@ -203,7 +245,7 @@ class Session:
             return Message()
         return self.users[user_name].get_message()
     
-    def get_alive_players(self):
+    def _get_alive_players(self):
         result = []
         for name, user in self.users.items():
             if user.alive:
@@ -231,6 +273,7 @@ class Session:
         self.ready_to_end_night_count += 1
         message = Message()
         if self.users[check_name].role == Role.MAFIA:
+            self.users[user_name].found_mafia = check_name
             message.make_server_message("Congrats! User " + check_name + " is mafia", False)
         else:
             message.make_server_message("Sorry! User " + check_name + " is not mafia. Try again next night", False)
@@ -249,6 +292,9 @@ class Session:
         message = Message()
         message.make_server_message("Fine! Consider " + kill_name + " dead", False)
         self.users[user_name].add_message(message)
+        night_message = Message()
+        night_message.make_server_message("User " + kill_name + " was killed last night", True)
+        self.stage_messages.append(night_message)
 
     def send_chat_message(self, user_name, text):
         if self.game_stage == GameStage.NIGHT:
@@ -263,6 +309,32 @@ class Session:
                 message.make_user_message(user_name, text, False)
             user.add_message(message)
 
+    def publish(self, user_name):
+        if self.game_stage != GameStage.DAY:
+            return "You can publish your investigation only at day time"
+        if self.users[user_name].role != Role.COMISSAR:
+            return "Only comissar can post investigation"
+        if self.users[user_name].found_mafia is None:
+            return "You didn't find mafia yet, you can't publish investigation"
+        for name, user in self.users.items():
+            message = Message()
+            if name == user_name:
+                message.make_server_message("Comissar published his investigations. It seams that " + self.users[user_name].found_mafia + " is mafia!", False)
+            else:
+                message.make_server_message("Comissar published his investigations. It seams that " + self.users[user_name].found_mafia + " is mafia!", True)
+            user.add_message(message)
+    
+    def blame(self, user_name, blame_name):
+        if not self.users[user_name].alive:
+            return "You can't blame anyone, you're dead"
+        if self.game_stage != GameStage.DAY:
+            return "You can blame users only at day time"
+        if self.users[user_name].blamed_anyone:
+            return "You already blamed someone this day. Wait for the next one"
+        if not self.users[blame_name].alive:
+            return "You can't blame dead user"
+        self.users[user_name].blamed_anyone = True
+        self.users[blame_name].blamed_count += 1
 
 class MafiaConnection(mafia_pb2_grpc.MafiaServicer):
     def ConnectToServer(self, request, context):
@@ -304,6 +376,19 @@ class MafiaConnection(mafia_pb2_grpc.MafiaServicer):
         if resp is not None:
             return mafia_pb2.CommonServerResponse(common_error=mafia_pb2.CommonServerResponse.CommonError(error_text=resp))
         return mafia_pb2.CommonServerResponse(empty_message=mafia_pb2.CommonServerResponse.EmptyMessage())
+
+    def Publish(self, request, context):
+        resp = current_sessions[request.session_name].publish(request.user_name)
+        if resp is not None:
+            return mafia_pb2.CommonServerResponse(common_error=mafia_pb2.CommonServerResponse.CommonError(error_text=resp))
+        return mafia_pb2.CommonServerResponse(empty_message=mafia_pb2.CommonServerResponse.EmptyMessage())
+
+    def Blame(self, request, context):
+        resp = current_sessions[request.session_name].blame(request.user_name, request.blame_name)
+        if resp is not None:
+            return mafia_pb2.CommonServerResponse(common_error=mafia_pb2.CommonServerResponse.CommonError(error_text=resp))
+        return mafia_pb2.CommonServerResponse(empty_message=mafia_pb2.CommonServerResponse.EmptyMessage())
+
 
 port = "50051"
 server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))

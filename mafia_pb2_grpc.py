@@ -44,6 +44,16 @@ class MafiaStub(object):
                 request_serializer=mafia__pb2.EndDayRequest.SerializeToString,
                 response_deserializer=mafia__pb2.CommonServerResponse.FromString,
                 )
+        self.Publish = channel.unary_unary(
+                '/Mafia/Publish',
+                request_serializer=mafia__pb2.PublishRequest.SerializeToString,
+                response_deserializer=mafia__pb2.CommonServerResponse.FromString,
+                )
+        self.Blame = channel.unary_unary(
+                '/Mafia/Blame',
+                request_serializer=mafia__pb2.BlameRequest.SerializeToString,
+                response_deserializer=mafia__pb2.CommonServerResponse.FromString,
+                )
 
 
 class MafiaServicer(object):
@@ -85,6 +95,18 @@ class MafiaServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def Publish(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def Blame(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_MafiaServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -116,6 +138,16 @@ def add_MafiaServicer_to_server(servicer, server):
             'EndDay': grpc.unary_unary_rpc_method_handler(
                     servicer.EndDay,
                     request_deserializer=mafia__pb2.EndDayRequest.FromString,
+                    response_serializer=mafia__pb2.CommonServerResponse.SerializeToString,
+            ),
+            'Publish': grpc.unary_unary_rpc_method_handler(
+                    servicer.Publish,
+                    request_deserializer=mafia__pb2.PublishRequest.FromString,
+                    response_serializer=mafia__pb2.CommonServerResponse.SerializeToString,
+            ),
+            'Blame': grpc.unary_unary_rpc_method_handler(
+                    servicer.Blame,
+                    request_deserializer=mafia__pb2.BlameRequest.FromString,
                     response_serializer=mafia__pb2.CommonServerResponse.SerializeToString,
             ),
     }
@@ -226,6 +258,40 @@ class Mafia(object):
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/Mafia/EndDay',
             mafia__pb2.EndDayRequest.SerializeToString,
+            mafia__pb2.CommonServerResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def Publish(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/Mafia/Publish',
+            mafia__pb2.PublishRequest.SerializeToString,
+            mafia__pb2.CommonServerResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def Blame(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/Mafia/Blame',
+            mafia__pb2.BlameRequest.SerializeToString,
             mafia__pb2.CommonServerResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
