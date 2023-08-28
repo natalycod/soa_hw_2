@@ -255,6 +255,8 @@ class Session:
     def end_day(self, user_name):
         if user_name not in self.users:
             return
+        if not self.users[user_name].alive:
+            return "It doesn't matter anymore, you're dead"
         if self.game_stage != GameStage.DAY:
             return "You can't end day, because it's not day now"
         if self.users[user_name].ready_to_end_day:
@@ -263,6 +265,8 @@ class Session:
         self.users[user_name].ready_to_end_day = True
 
     def check(self, user_name, check_name):
+        if not self.users[user_name].alive:
+            return "You can't check anyone, you're dead"
         if self.game_stage != GameStage.NIGHT:
             return "You can check users only at night"
         if self.users[user_name].role != Role.COMISSAR:
@@ -280,6 +284,10 @@ class Session:
         self.users[user_name].add_message(message)
     
     def kill(self, user_name, kill_name):
+        if not self.users[user_name].alive:
+            return "You can't kill anyone, you're dead"
+        if not self.users[kill_name].alive:
+            return "You can't kill this user, he's already dead"
         if self.game_stage != GameStage.NIGHT:
             return "You can kill users only at night"
         if self.users[user_name].role != Role.MAFIA:
@@ -297,10 +305,10 @@ class Session:
         self.stage_messages.append(night_message)
 
     def send_chat_message(self, user_name, text):
-        if self.game_stage == GameStage.NIGHT:
-            return "You can't chat at night"
         if not self.users[user_name].alive:
             return "You can't chat, you're dead"
+        if self.game_stage == GameStage.NIGHT:
+            return "You can't chat at night"
         for name, user in self.users.items():
             message = Message()
             if name == user_name:
@@ -310,6 +318,8 @@ class Session:
             user.add_message(message)
 
     def publish(self, user_name):
+        if not self.users[user_name].alive:
+            return "You can't publish anything, you're dead"
         if self.game_stage != GameStage.DAY:
             return "You can publish your investigation only at day time"
         if self.users[user_name].role != Role.COMISSAR:
@@ -353,41 +363,34 @@ class MafiaConnection(mafia_pb2_grpc.MafiaServicer):
         message = current_sessions[request.session_name].get_user_message(request.user_name)
         return message.ConvertToGetMessageResponse()
 
+    def _HandleCommonResponse(func_resp):
+        if func_resp is not None:
+            return mafia_pb2.CommonServerResponse(common_error=mafia_pb2.CommonServerResponse.CommonError(error_text=func_resp))
+        return mafia_pb2.CommonServerResponse(empty_message=mafia_pb2.CommonServerResponse.EmptyMessage())
+
     def CheckUser(self, request, context):
         resp = current_sessions[request.session_name].check(request.user_name, request.check_name)
-        if resp is not None:
-            return mafia_pb2.CommonServerResponse(common_error=mafia_pb2.CommonServerResponse.CommonError(error_text=resp))
-        return mafia_pb2.CommonServerResponse(empty_message=mafia_pb2.CommonServerResponse.EmptyMessage())
+        return self._HandleCommonResponse(resp)
 
     def KillUser(self, request, context):
         resp = current_sessions[request.session_name].kill(request.user_name, request.kill_name)
-        if resp is not None:
-            return mafia_pb2.CommonServerResponse(common_error=mafia_pb2.CommonServerResponse.CommonError(error_text=resp))
-        return mafia_pb2.CommonServerResponse(empty_message=mafia_pb2.CommonServerResponse.EmptyMessage())
+        return self._HandleCommonResponse(resp)
 
     def SendChatMessage(self, request, context):
         resp = current_sessions[request.session_name].send_chat_message(request.user_name, request.text)
-        if resp is not None:
-            return mafia_pb2.CommonServerResponse(common_error=mafia_pb2.CommonServerResponse.CommonError(error_text=resp))
-        return mafia_pb2.CommonServerResponse(empty_message=mafia_pb2.CommonServerResponse.EmptyMessage())
+        return self._HandleCommonResponse(resp)
 
     def EndDay(self, request, context):
         resp = current_sessions[request.session_name].end_day(request.user_name)
-        if resp is not None:
-            return mafia_pb2.CommonServerResponse(common_error=mafia_pb2.CommonServerResponse.CommonError(error_text=resp))
-        return mafia_pb2.CommonServerResponse(empty_message=mafia_pb2.CommonServerResponse.EmptyMessage())
+        return self._HandleCommonResponse(resp)
 
     def Publish(self, request, context):
         resp = current_sessions[request.session_name].publish(request.user_name)
-        if resp is not None:
-            return mafia_pb2.CommonServerResponse(common_error=mafia_pb2.CommonServerResponse.CommonError(error_text=resp))
-        return mafia_pb2.CommonServerResponse(empty_message=mafia_pb2.CommonServerResponse.EmptyMessage())
+        return self._HandleCommonResponse(resp)
 
     def Blame(self, request, context):
         resp = current_sessions[request.session_name].blame(request.user_name, request.blame_name)
-        if resp is not None:
-            return mafia_pb2.CommonServerResponse(common_error=mafia_pb2.CommonServerResponse.CommonError(error_text=resp))
-        return mafia_pb2.CommonServerResponse(empty_message=mafia_pb2.CommonServerResponse.EmptyMessage())
+        return self._HandleCommonResponse(resp)
 
 
 port = "50051"
