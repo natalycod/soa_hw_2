@@ -9,6 +9,8 @@ import threading
 from queue import Queue
 from enum import Enum
 
+NEED_USERS_COUNT = 4
+
 current_sessions = {}
 
 class MessageType(Enum):
@@ -115,7 +117,7 @@ class Session:
         self.stage_messages = []
 
     def _try_to_start_game(self):
-        if len(self.users) < 2:
+        if len(self.users) < NEED_USERS_COUNT:
             return False
         self.game_stage = GameStage.DAY
         self._clear_stage()
@@ -363,7 +365,7 @@ class MafiaConnection(mafia_pb2_grpc.MafiaServicer):
         message = current_sessions[request.session_name].get_user_message(request.user_name)
         return message.ConvertToGetMessageResponse()
 
-    def _HandleCommonResponse(func_resp):
+    def _HandleCommonResponse(self, func_resp):
         if func_resp is not None:
             return mafia_pb2.CommonServerResponse(common_error=mafia_pb2.CommonServerResponse.CommonError(error_text=func_resp))
         return mafia_pb2.CommonServerResponse(empty_message=mafia_pb2.CommonServerResponse.EmptyMessage())

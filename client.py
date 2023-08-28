@@ -56,33 +56,31 @@ class UserSession:
                 else:
                     print(bcolors.OKGREEN + response.user_message.user_name + ": " + response.user_message.text + bcolors.ENDC)
 
+    def _handle_common_response_error(self, resp):
+        if resp.HasField("common_error"):
+            print(bcolors.FAIL + "error: " + resp.common_error.error_text + bcolors.ENDC)
+
     def process_user_commands(self):
         while True:
             command = input()
             if command.startswith("chat "):
                 response = self._stub.SendChatMessage(mafia_pb2.SendChatMessageRequest(session_name=self.session_name, user_name=self.user_name, text=command[5:]))
-                if response.HasField("common_error"):
-                    print(bcolors.FAIL + "error: " + response.common_error.error_text + bcolors.ENDC)
+                self._handle_common_response_error(response)
             if command.startswith("end_day"):
                 response = self._stub.EndDay(mafia_pb2.EndDayRequest(session_name=self.session_name, user_name=self.user_name))
-                if response.HasField("common_error"):
-                    print(bcolors.FAIL + "error: " + response.common_error.error_text + bcolors.ENDC)
+                self._handle_common_response_error(response)
             if command.startswith("check "):
                 response = self._stub.CheckUser(mafia_pb2.CheckUserRequest(session_name=self.session_name, user_name=self.user_name, check_name=command[6:]))
-                if response.HasField("common_error"):
-                    print(bcolors.FAIL + "error: " + response.common_error.error_text + bcolors.ENDC)
+                self._handle_common_response_error(response)
             if command.startswith("kill "):
                 response = self._stub.KillUser(mafia_pb2.KillUserRequest(session_name=self.session_name, user_name=self.user_name, kill_name=command[5:]))
-                if response.HasField("common_error"):
-                    print(bcolors.FAIL + "error: " + response.common_error.error_text + bcolors.ENDC)
+                self._handle_common_response_error(response)
             if command.startswith("publish"):
                 response = self._stub.Publish(mafia_pb2.PublishRequest(session_name=self.session_name, user_name=self.user_name))
-                if response.HasField("common_error"):
-                    print(bcolors.FAIL + "error: " + response.common_error.error_text + bcolors.ENDC)
+                self._handle_common_response_error(response)
             if command.startswith("blame "):
                 response = self._stub.Blame(mafia_pb2.BlameRequest(session_name=self.session_name, user_name=self.user_name, blame_name=command[6:]))
-                if response.HasField("common_error"):
-                    print(bcolors.FAIL + "error: " + response.common_error.error_text + bcolors.ENDC)
+                self._handle_common_response_error(response)
 
 print("Hi! Wanna play some mafia?")
 print("Enter name of session you want to connect to")
